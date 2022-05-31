@@ -47,10 +47,31 @@ function getProductsList (){
 // create a card for each product on index page.
 function createProductCard(product){
     const url = `./product.html?id=${product._id}`;
-    const imgUrl = product.imageUrl;
-    const altTxt = product.altTxt;
-    const name = product.name;
-    const description = product.description;
+    const { imageUrl, altTxt, name, description } = product; // Extract Value of product object
+    
+    const imageTag = document.createElement('img');
+    imageTag.setAttribute("src", imageUrl);
+    imageTag.setAttribute("alt", altTxt);
+
+    const nameTag = document.createElement('h3');
+    nameTag.classList.add('productName');
+    nameTag.innerText = name;
+
+    const descriptionTag = document.createElement('p');
+    descriptionTag.classList.add('productDescription');
+    descriptionTag.innerText= description;
+
+    const articleTag = document.createElement('article');
+    articleTag.appendChild(imageTag);
+    articleTag.appendChild(nameTag);
+    articleTag.appendChild(descriptionTag);
+
+    const aTag = document.createElement('a');
+    aTag.setAttribute("href", url);
+    aTag.appendChild(articleTag);
+
+    itemsSection.appendChild(aTag);
+    console.log('done');
 }
 
 getProductsList();
