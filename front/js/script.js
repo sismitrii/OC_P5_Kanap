@@ -1,7 +1,6 @@
 /* ----------------- Variables -----------------------*/
 const itemsSection = document.getElementById('items');
 
-
 let productsList = [];
 
 
@@ -17,12 +16,10 @@ function getProductsList (){
             }
         })
         .then(function(allProducts){
-            console.log(typeof(allProducts)); // object so do we need to put it in a proper array ?
+            console.log(typeof(allProducts));
             allProducts.forEach(product => {
                 console.log(product);
                 createProductCard(product);
-                //productsList.push(product);
-                //getProductCharacteristic(product._id);
             });
 
             // PENSER A INCLURE UN CATCH
