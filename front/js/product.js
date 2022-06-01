@@ -1,5 +1,5 @@
 /*====================================================*/
-/* ----------------- Variable -----------------------*/
+/* ----------------- Variables -----------------------*/
 /*====================================================*/
 
 const addToBagButton = document.getElementById('addToCart');
@@ -7,10 +7,11 @@ const colorsSelectTag = document.getElementById('colors');
 const quantityTag = document.getElementById('quantity');
 
 let productID;
+
+
 /*====================================================*/
 /* ----------------- Functions -----------------------*/
 /*====================================================*/
-
 
 /* === Search in the url of the page the ID of the product and return it === */
 function findProductIDOfPage(){
@@ -56,7 +57,6 @@ function addProductCharacteristic(productCharacteristic){  // How could I just e
     document.getElementById('description').innerText = description;
 
     // colors
-
     for (let color of colors){
         const colorTag = document.createElement('option');
         colorTag.setAttribute("value", color);
@@ -64,11 +64,6 @@ function addProductCharacteristic(productCharacteristic){  // How could I just e
         colorsSelectTag.appendChild(colorTag);
     }
 }
-
-getProductCharacteristic();
-addToBagButton.addEventListener('click',addToBag);
-
-
 
 /* === add to localStorage the product === */
 function addToBag(){
@@ -80,7 +75,9 @@ function addToBag(){
         } else {
             addNewProductInbag(quantity, colorChoice);  
             // value of quantityTag and color put to origin
-            // add a symbol or something after "Panier" to signal it have been added
+            // resetQuantity();
+            // add a symbol or something after "Panier" to signal it have been added or number object in
+            // bag
         }
     }
 }
@@ -120,3 +117,10 @@ function checkValue(quantity, colorChoice){
     // put the background color with bad value in red
     // make and move from left to right
 }*/
+
+
+/*====================================================*/
+/* -------------------- Main -------------------------*/
+/*====================================================*/
+getProductCharacteristic();
+addToBagButton.addEventListener('click',addToBag);
