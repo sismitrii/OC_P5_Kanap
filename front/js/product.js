@@ -1,21 +1,25 @@
+/*====================================================*/
 /* ----------------- Variable -----------------------*/
+/*====================================================*/
+
 const addToBagButton = document.getElementById('addToCart');
 const colorsSelectTag = document.getElementById('colors');
 const quantityTag = document.getElementById('quantity');
 
-
 let productID;
-
+/*====================================================*/
 /* ----------------- Functions -----------------------*/
+/*====================================================*/
 
-// Search in the url of the page the ID of the product and return it
+
+/* === Search in the url of the page the ID of the product and return it === */
 function findProductIDOfPage(){
     let pageUrl = new URL(window.location.href);
     productID = pageUrl.searchParams.get('id');
     return productID;
 }
 
-// Use the Id of the product to get all these characteristic
+/* === Use the Id of the product to get all these characteristic === */
 function getProductCharacteristic(){
     findProductIDOfPage();
     let productCharacteristic;
@@ -35,9 +39,8 @@ function getProductCharacteristic(){
     //return productCharacteristic;
 }
 
-function addProductCharacteristic(productCharacteristic){  // How could I just execute this function when *** is done ? 
-    //let productCharacteristic = getProductCharacteristic();
-    
+/* === Add to the DOM the characteristic of the product === */
+function addProductCharacteristic(productCharacteristic){  // How could I just execute this function when *** is done ?     
     const {imageUrl, altTxt, name, price, description, colors} = productCharacteristic;
     
     //image
@@ -67,17 +70,18 @@ addToBagButton.addEventListener('click',addToBag);
 
 
 
-//add to localStorage the product
+/* === add to localStorage the product === */
 function addToBag(){
-    //check if a color and a quantity have been added
-    // if (checkValue()){} else {advise()}
-    if (checkValue()){
+    let quantity = quantityTag.value; 
+    let colorChoice = colorsSelectTag.value;
+    if (checkValue(quantity, colorChoice)){
         if (localStorage[productID]!= undefined){
             console.log("already exist");
-            //modifyQuantityInBag();
+            //modifyQuantityInBag(quantity, colorChoice);
         } else {
-            console.log("not existing");
-            //addNewProductInbag();
+            addNewProductInbag(quantity, colorChoice);  
+            // value of quantityTag and color put to origin
+            // add a symbol or something after "Panier" to signal it have been added
         }
     }
 }
@@ -85,20 +89,28 @@ function addToBag(){
 /*function modifyQuantityInBag(){
 }*/
 
-/*function addNewProductInbag(){
-}*/
+/* === Add the product choiced on the localStorage === 
+    Format used : productID : {"colorChoice":"quantity"}
+*/
+function addNewProductInbag(quantity, colorChoice){  // why if i don't put it as an argument i have a console.log(quantity) => <input...
+    const productObj = {
+        [colorChoice] : quantity  // use the format color : quantity in case customer add 2 different color of the same product
+    }
+    localStorage[productID] = JSON.stringify(productObj); // use of JSON mandatory for object in localStorage
+    console.log("done");
+}
 
-function checkValue(){
-   if((colorsSelectTag.value !== "") && (quantityTag.value >= 1)){
+/* === check if quantity and color have been choiced and if not inform customers === */
+function checkValue(quantity, colorChoice){
+   if((colorChoice !== "") && (quantity >= 1)){
      return true;   
    } else {
-    advise();
+    //advise();
     return false;
    }
 }
 
-function advise(){
-    console.log("let's advise you");
+/*function advise(){
     // put the background color with bad value in red
     // make and move from left to right
-}
+}*/
