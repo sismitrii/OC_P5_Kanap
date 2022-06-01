@@ -71,7 +71,6 @@ function createProductCard(product){
     aTag.appendChild(articleTag);
 
     itemsSection.appendChild(aTag);
-    console.log('done');
 }
 
 getProductsList();
