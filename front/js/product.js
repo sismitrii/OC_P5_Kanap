@@ -72,12 +72,11 @@ addToBagButton.addEventListener('click',addToBag);
 
 /* === add to localStorage the product === */
 function addToBag(){
-    let quantity = quantityTag.value; 
+    let quantity = parseInt(quantityTag.value);  // quantityTag.value is a string
     let colorChoice = colorsSelectTag.value;
     if (checkValue(quantity, colorChoice)){
         if (localStorage[productID]!= undefined){
-            console.log("already exist");
-            //modifyQuantityInBag(quantity, colorChoice);
+            modifyQuantityInBag(quantity, colorChoice);
         } else {
             addNewProductInbag(quantity, colorChoice);  
             // value of quantityTag and color put to origin
@@ -85,9 +84,17 @@ function addToBag(){
         }
     }
 }
-
-/*function modifyQuantityInBag(){
-}*/
+/* === modify Quantity of a product in local storage === */
+function modifyQuantityInBag(quantity, colorChoice){
+    let productObjInBag = JSON.parse(localStorage[productID]);
+        for (let color in productObjInBag){
+            if (color === colorChoice){     // if that color of that product have already been choiced we update the quantity
+                quantity = quantity + productObjInBag[color];  
+            }
+        }
+        productObjInBag[colorChoice] = quantity;
+        localStorage[productID] = JSON.stringify(productObjInBag);
+}
 
 /* === Add the product choiced on the localStorage === 
     Format used : productID : {"colorChoice":"quantity"}
@@ -97,7 +104,6 @@ function addNewProductInbag(quantity, colorChoice){  // why if i don't put it as
         [colorChoice] : quantity  // use the format color : quantity in case customer add 2 different color of the same product
     }
     localStorage[productID] = JSON.stringify(productObj); // use of JSON mandatory for object in localStorage
-    console.log("done");
 }
 
 /* === check if quantity and color have been choiced and if not inform customers === */
