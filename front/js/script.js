@@ -1,13 +1,17 @@
+/*====================================================*/
 /* ----------------- Variables -----------------------*/
+/*====================================================*/
 const itemsSection = document.getElementById('items');
 
 let productsList = [];
 
-
+/*====================================================*/
 /* ----------------- Functions -----------------------*/
+/*====================================================*/
 
 
-// get the list of all products
+
+/* === get the list of all products ===*/
 function getProductsList (){
     fetch('http://localhost:3000/api/products')
         .then(function(res){
@@ -27,7 +31,7 @@ function getProductsList (){
 }
 
 
-// get the charactéristic of each products
+/* === get the charactéristic of each products === */
 
 /*function getProductCharacteristic(productID){
     fetch(`http://localhost:3000/api/products/${productID}`)
@@ -41,7 +45,7 @@ function getProductsList (){
         })
 }*/
 
-// create a card for each product on index page.
+/* === create a card for each product on index page ===*/
 function createProductCard(product){
     const url = `./product.html?id=${product._id}`;
     const { imageUrl, altTxt, name, description } = product; // Extract Value of product object
