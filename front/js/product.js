@@ -1,15 +1,21 @@
+/* ----------------- Variable -----------------------*/
+const addToBagButton = document.getElementById('addToCart');
+
+
+let productID;
+
 /* ----------------- Functions -----------------------*/
 
 // Search in the url of the page the ID of the product and return it
 function findProductIDOfPage(){
     let pageUrl = new URL(window.location.href);
-    let productID = pageUrl.searchParams.get('id');
+    productID = pageUrl.searchParams.get('id');
     return productID;
 }
 
 // Use the Id of the product to get all these characteristic
 function getProductCharacteristic(){
-    let productID = findProductIDOfPage();
+    findProductIDOfPage();
     let productCharacteristic;
     fetch(`http://localhost:3000/api/products/${productID}`)
         .then(function(res){
@@ -56,11 +62,34 @@ function addProductCharacteristic(productCharacteristic){  // How could I just e
 }
 
 getProductCharacteristic();
-
-function test() {
-
-    console.log(localStorage["prenom"]);
+//addToBagButton.addEventListener('click',addToBag);
 
 
+
+//add to localStorage the product
+function addToBag(){
+    //check if a color and a quantity have been added
+    // if (checkValue()){} else {advise()}
+
+    if (localStorage[productID]!= undefined){
+        console.log("already exist");
+        //modifyQuantityInBag();
+    } else {
+        console.log("not existing");
+        //addNewProductInbag();
+    }
 }
-test();
+
+/*function modifyQuantityInBag(){
+}*/
+
+/*function addNewProductInbag(){
+}*/
+
+/*function checkValue(){
+}*/
+
+/* function advise(){
+    // put the background color with bad value in red
+    // make and move from left to right
+}*/
