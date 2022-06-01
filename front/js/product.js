@@ -72,10 +72,11 @@ function addToBag(){
     if (checkValue(quantity, colorChoice)){
         if (localStorage[productID]!= undefined){
             modifyQuantityInBag(quantity, colorChoice);
+            resetQuantity();
         } else {
             addNewProductInbag(quantity, colorChoice);  
             // value of quantityTag and color put to origin
-            // resetQuantity();
+            resetQuantity();
             // add a symbol or something after "Panier" to signal it have been added or number object in
             // bag
         }
@@ -118,9 +119,15 @@ function checkValue(quantity, colorChoice){
     // make and move from left to right
 }*/
 
+function resetQuantity(){
+    quantityTag.value = 0;
+    colorsSelectTag.children[0].setAttribute("selected", "");
+}
+
 
 /*====================================================*/
 /* -------------------- Main -------------------------*/
 /*====================================================*/
 getProductCharacteristic();
 addToBagButton.addEventListener('click',addToBag);
+colorsSelectTag.addEventListener('change', ()=>{ colorsSelectTag.children[0].removeAttribute("selected")});
