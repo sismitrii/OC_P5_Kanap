@@ -1,5 +1,7 @@
 /* ----------------- Variable -----------------------*/
 const addToBagButton = document.getElementById('addToCart');
+const colorsSelectTag = document.getElementById('colors');
+const quantityTag = document.getElementById('quantity');
 
 
 let productID;
@@ -51,7 +53,6 @@ function addProductCharacteristic(productCharacteristic){  // How could I just e
     document.getElementById('description').innerText = description;
 
     // colors
-    const colorsSelectTag = document.getElementById('colors');
 
     for (let color of colors){
         const colorTag = document.createElement('option');
@@ -62,7 +63,7 @@ function addProductCharacteristic(productCharacteristic){  // How could I just e
 }
 
 getProductCharacteristic();
-//addToBagButton.addEventListener('click',addToBag);
+addToBagButton.addEventListener('click',addToBag);
 
 
 
@@ -70,13 +71,14 @@ getProductCharacteristic();
 function addToBag(){
     //check if a color and a quantity have been added
     // if (checkValue()){} else {advise()}
-
-    if (localStorage[productID]!= undefined){
-        console.log("already exist");
-        //modifyQuantityInBag();
-    } else {
-        console.log("not existing");
-        //addNewProductInbag();
+    if (checkValue()){
+        if (localStorage[productID]!= undefined){
+            console.log("already exist");
+            //modifyQuantityInBag();
+        } else {
+            console.log("not existing");
+            //addNewProductInbag();
+        }
     }
 }
 
@@ -86,10 +88,17 @@ function addToBag(){
 /*function addNewProductInbag(){
 }*/
 
-/*function checkValue(){
-}*/
+function checkValue(){
+   if((colorsSelectTag.value !== "") && (quantityTag.value >= 1)){
+     return true;   
+   } else {
+    advise();
+    return false;
+   }
+}
 
-/* function advise(){
+function advise(){
+    console.log("let's advise you");
     // put the background color with bad value in red
     // make and move from left to right
-}*/
+}
