@@ -26,7 +26,9 @@ function getProductsList (){
                 createProductCard(product);
             });
 
-            // PENSER A INCLURE UN CATCH
+        }).catch(function(err){
+            console.log(err);
+            showError();
         });
 }
 
@@ -74,6 +76,13 @@ function createProductCard(product){
     itemsSection.appendChild(aTag);
 }
 
+
+function showError(){
+    const title = document.querySelector('.titles h1');
+    title.innerHTML = "Erreur dans le chargement de la page </br>Veuillez nous excusez !";
+    const text = document.querySelector('titles h2');
+    text.innerHTML = "Le problème est actuellement pris en charge par notre équipe, veuillez réessayer ultérieurement";
+}
 
 /*====================================================*/
 /* -------------------- Main -------------------------*/

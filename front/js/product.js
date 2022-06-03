@@ -36,6 +36,9 @@ function getProductCharacteristic(){
 
             //productCharacteristic = product;
             //***
+        }).catch(function(err){
+            console.log(err);
+            showError();
         });
     //return productCharacteristic;
 }
@@ -63,6 +66,15 @@ function addProductCharacteristic(productCharacteristic){  // How could I just e
         colorTag.innerText = color;
         colorsSelectTag.appendChild(colorTag);
     }
+}
+
+function showError(){
+    const article = document.querySelector('.item article');
+    article.style = "display : none";
+    let errorMessage = document.createElement('h1');
+    errorMessage.innerHTML = "Erreur dans le chargement de la page </br>Veuillez nous excusez !";
+    const item = (document.querySelector('.item'));
+    item.appendChild(errorMessage);
 }
 
 /* === add to localStorage the product === */
@@ -98,7 +110,6 @@ function addToBag(){
 /* === check if quantity and color have been choiced and if not inform customers === */
 function checkValue(quantity, colorChoice){
     if((colorChoice === "") || (quantity < 1) || (quantity >100)){
-        console.log("wrong way");
       return false;   
     }
     //advise();
