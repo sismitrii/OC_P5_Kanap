@@ -97,12 +97,12 @@ function addToBag(){
 
 /* === check if quantity and color have been choiced and if not inform customers === */
 function checkValue(quantity, colorChoice){
-    if((colorChoice !== "") && (quantity >= 1)){
-      return true;   
-    } else {
-     //advise();
-     return false;
+    if((colorChoice === "") || (quantity < 1) || (quantity >100)){
+        console.log("wrong way");
+      return false;   
     }
+    //advise();
+    return true;
  }
 
  /* ===  Save the tab with all product choiced in the Local Storage === */
