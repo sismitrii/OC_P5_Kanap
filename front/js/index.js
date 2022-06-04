@@ -20,14 +20,11 @@ function getProductsList (){
             }
         })
         .then(function(allProducts){
-            console.log(typeof(allProducts));
             allProducts.forEach(product => {
-                console.log(product);
                 createProductCard(product);
             });
 
         }).catch(function(err){
-            console.log(err);
             showError();
         });
 }
