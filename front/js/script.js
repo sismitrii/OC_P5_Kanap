@@ -6,8 +6,7 @@ let quantityInBag = 0;
 
 function addIconBag() {
     countQuantityInBag();// faire le compte
-    console.log(quantityInBag);
-    // creer l'icon
+    createIcon();
 }
 
 function countQuantityInBag(){
@@ -22,6 +21,7 @@ function getTabOfProduct(){
 }
 
 function count(){
+    quantityInBag = 0;
     for (let product of productsTab){
         for (let element in product){
             if (element != "id"){
@@ -29,6 +29,10 @@ function count(){
             }
         }
     }
+}
+
+function createIcon(){
+    
 }
 
 addIconBag();
