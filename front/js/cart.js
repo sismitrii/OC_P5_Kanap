@@ -1,4 +1,6 @@
+import { addIconBag } from "./script.js";
 import { quantityInBag} from "./script.js";
+//import {saveInLocalStorage} from "./product.js";
 
 
 
@@ -77,7 +79,6 @@ function getProductCharacteristic(productID){
         });
 }
 
-
 async function showTotal(){
     const totalQuantityTag = document.getElementById('totalQuantity');
     totalQuantityTag.innerText = quantityInBag;
@@ -111,14 +112,50 @@ async function totalPrice(){
         }
         
     }
-    console.log(totalPrice);
     return totalPrice;
-
 }
 
-function initOfPage(){
-    showAllProductChoiced();
-    showTotal(); 
+function changeQuantity(){
+    const itemQuantityInputTab = document.querySelectorAll('.itemQuantity');
+    console.log(itemQuantityInputTab);
+;    itemQuantityInputTab.forEach(input => {
+        input.addEventListener('change', updateQuantity); //change is when input lose focus
+    });
+}
+
+function updateQuantity(e){
+    let newQuantity = parseInt(e.target.value);
+    if ((newQuantity != "") && (newQuantity >= 1) &&(newQuantity <= 100)){
+        updateLocalStorage(newQuantity, e.target);
+        addIconBag();
+        showTotal();
+          
+    } else {
+        // putBackOldValue
+    }
+}
+
+function updateLocalStorage(newQuantity, input){
+    let articleId = input.closest('.cart__item').dataset.id;
+    let articleColor = input.closest('.cart__item').dataset.color;
+    let storageTab = getAllproductOfStorage();
+    
+    storageTab.forEach( product => {
+        if (product.id === articleId){
+            product[articleColor] = newQuantity;
+        }
+    });
+    //saveInLocalStorage(storageTab);
+    localStorage.kanapProduct = JSON.stringify(storageTab);
+    
+}
+
+async function initOfPage(){
+    await showAllProductChoiced();
+    await showTotal(); 
+
+    changeQuantity();
 }
 
 initOfPage();
+

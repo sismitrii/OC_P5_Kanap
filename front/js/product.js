@@ -120,7 +120,7 @@ function checkValue(quantity, colorChoice){
  }
 
  /* ===  Save the tab with all product choiced in the Local Storage === */
- function saveInLocalStorage(tab){
+function saveInLocalStorage(tab){
     localStorage.kanapProduct = JSON.stringify(tab);
 }
 
@@ -130,7 +130,7 @@ function createBag(quantity, colorChoice){
         id : productID,
         [colorChoice] : quantity
     }]
-    saveInLocalStorage (tab);
+    saveInLocalStorage(tab);
 }
 
 /* ===  Add a new product to tab in the local storage === */
