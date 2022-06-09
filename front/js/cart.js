@@ -1,12 +1,14 @@
+import { quantityInBag} from "./script.js";
+
+
 
 function showAllProductChoiced(){
-    let allProductTab = getAllproduct();
-    console.log(allProductTab);
+    let allProductTab = getAllproductOfStorage();
     allProductTab.forEach(showProduct);
 }
 
 
-function getAllproduct(){
+function getAllproductOfStorage(){
     if (localStorage.kanapProduct !== undefined){
        return JSON.parse(localStorage.kanapProduct); 
     } 
@@ -26,8 +28,6 @@ function showProduct(product){
 
 async function createArticle(id, color, qty){
     let productCharacteristic = await getProductCharacteristic(id); // productCharateristic is a promise
-    //console.log(id + " : " + color + " : " + qty);
-    console.log(productCharacteristic);
 
     const cartTag = document.getElementById('cart__items');
 
@@ -77,4 +77,48 @@ function getProductCharacteristic(productID){
         });
 }
 
-showAllProductChoiced();
+
+async function showTotal(){
+    const totalQuantityTag = document.getElementById('totalQuantity');
+    totalQuantityTag.innerText = quantityInBag;
+    const totalPriceTag = document.getElementById('totalPrice');
+    totalPriceTag.innerText = await totalPrice();
+}
+
+async function totalPrice(){
+    let storageTab = getAllproductOfStorage();
+    let totalPrice = 0;
+    /*storageTab.forEach( async function(product){
+        let productCharacteristic = await getProductCharacteristic(product.id);
+        let price = productCharacteristic.price;
+
+        for (let element in product){
+            if (element != "id"){
+                totalPrice += price*product[element];
+            }
+        }
+        console.log(totalPrice); 
+        return totalPrice;
+    });*/
+
+    for (let product of storageTab){
+        let productCharacteristic = await getProductCharacteristic(product.id);
+        let price = productCharacteristic.price;
+        for (let element in product){
+            if (element != "id"){
+                totalPrice += price*product[element];
+            }
+        }
+        
+    }
+    console.log(totalPrice);
+    return totalPrice;
+
+}
+
+function initOfPage(){
+    showAllProductChoiced();
+    showTotal(); 
+}
+
+initOfPage();

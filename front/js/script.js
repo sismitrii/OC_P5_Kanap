@@ -56,3 +56,4 @@ function createIcon(){
 }
 
 addIconBag();
+export {quantityInBag};
