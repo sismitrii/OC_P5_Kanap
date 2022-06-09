@@ -153,6 +153,7 @@ function putBackOldValue(input, articleId, articleColor, storageTab){
     storageTab.forEach( product => {
         if (product.id === articleId){
             input.value = product[articleColor];
+            //advise()
         }
     });
 
@@ -172,9 +173,9 @@ function deleteProduct(e){
     let storageTab = getAllproductOfStorage();
 
     deleteOfStorageTab(storageTab, articleId, articleColor);
-    // retirer l'article du DOM
-    // addIconBag();
-    // showTotal();
+    article.remove();
+    addIconBag();
+    showTotal();
 }
 
 function deleteOfStorageTab(storageTab, articleId, articleColor){
@@ -189,6 +190,8 @@ function deleteOfStorageTab(storageTab, articleId, articleColor){
     });
     localStorage.kanapProduct = JSON.stringify(storageTab);
 }
+
+
 async function initOfPage(){
     await showAllProductChoiced();
     await showTotal(); 
