@@ -32,26 +32,33 @@ function count(){
 }
 
 function createIcon(){
+    let iconTag = document.getElementById("bag__icon");
     if(productsTab.length > 0){
-        const icon = document.createElement('div');
-        icon.innerText = quantityInBag;
-        icon.style =
-        `position : absolute;
-        display : flex;
-        justify-content : center;
-        align-item :center;
-        width : 25px;
-        height : 25px;
-        top : 30px;
-        right : -20px;
-        border-radius : 50%;
-        color : white;
-        line-height : 25px;
-        background-color : #3498DB; 
-        `;
-        const bagTag = document.getElementById('bag');
-        bagTag.style = `position : relative`;
-        bagTag.appendChild(icon);
+        if (iconTag === null){
+            const icon = document.createElement('div');
+            icon.id = "bag__icon";
+            icon.style =
+            `position : absolute;
+            display : flex;
+            justify-content : center;
+            align-item :center;
+            width : 25px;
+            height : 25px;
+            top : 30px;
+            right : -20px;
+            border-radius : 50%;
+            color : white;
+            line-height : 25px;
+            background-color : #3498DB; 
+            `;
+            iconTag = icon;
+            const bagTag = document.getElementById('bag');
+            bagTag.style = `position : relative`;
+            bagTag.appendChild(iconTag);
+        }
+        iconTag.innerText = quantityInBag;
+    } else {
+        iconTag.remove();
     }
 }
 
