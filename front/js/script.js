@@ -57,7 +57,7 @@ function createIcon(){
             bagTag.appendChild(iconTag);
         }
         iconTag.innerText = quantityInBag;
-    } else {
+    } else if (iconTag !== null){
         iconTag.remove();
     }
 }
