@@ -115,9 +115,8 @@ async function totalPrice(){
     return totalPrice;
 }
 
-function changeQuantity(){
+function initEventChangeQuantity(){
     const itemQuantityInputTab = document.querySelectorAll('.itemQuantity');
-    console.log(itemQuantityInputTab);
 ;    itemQuantityInputTab.forEach(input => {
         input.addEventListener('change', updateQuantity); //change is when input lose focus
     });
@@ -159,11 +158,43 @@ function putBackOldValue(input, articleId, articleColor, storageTab){
 
 }
 
+function initEventDelete(){
+    const itemDeleteTab = document.querySelectorAll('.deleteItem');
+    itemDeleteTab.forEach( item =>{
+        item.addEventListener('click', deleteProduct);
+    })
+}
+
+function deleteProduct(e){
+    let article = e.target.closest('.cart__item')
+    let articleId = article.dataset.id;
+    let articleColor = article.dataset.color;
+    let storageTab = getAllproductOfStorage();
+
+    deleteOfStorageTab(storageTab, articleId, articleColor);
+    // retirer l'article du DOM
+    // addIconBag();
+    // showTotal();
+}
+
+function deleteOfStorageTab(storageTab, articleId, articleColor){
+    storageTab.forEach( product => {
+        if (product.id === articleId){
+            if (Object.keys(product).length > 2){
+                delete product[articleColor];
+            } else {
+                storageTab.splice(storageTab.indexOf(product), 1);
+            }
+        }
+    });
+    localStorage.kanapProduct = JSON.stringify(storageTab);
+}
 async function initOfPage(){
     await showAllProductChoiced();
     await showTotal(); 
 
-    changeQuantity();
+    initEventChangeQuantity();
+    initEventDelete();
 }
 
 initOfPage();
