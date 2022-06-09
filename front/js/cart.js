@@ -125,20 +125,20 @@ function changeQuantity(){
 
 function updateQuantity(e){
     let newQuantity = parseInt(e.target.value);
+    let articleId = e.target.closest('.cart__item').dataset.id;
+    let articleColor = e.target.closest('.cart__item').dataset.color;
+    let storageTab = getAllproductOfStorage();
     if ((newQuantity != "") && (newQuantity >= 1) &&(newQuantity <= 100)){
-        updateLocalStorage(newQuantity, e.target);
+        updateLocalStorage(newQuantity, articleId, articleColor, storageTab);
         addIconBag();
         showTotal();
           
     } else {
-        // putBackOldValue
+        putBackOldValue(e.target, articleId, articleColor, storageTab);
     }
 }
 
-function updateLocalStorage(newQuantity, input){
-    let articleId = input.closest('.cart__item').dataset.id;
-    let articleColor = input.closest('.cart__item').dataset.color;
-    let storageTab = getAllproductOfStorage();
+function updateLocalStorage(newQuantity, articleId, articleColor, storageTab){;
     
     storageTab.forEach( product => {
         if (product.id === articleId){
@@ -148,6 +148,15 @@ function updateLocalStorage(newQuantity, input){
     //saveInLocalStorage(storageTab);
     localStorage.kanapProduct = JSON.stringify(storageTab);
     
+}
+
+function putBackOldValue(input, articleId, articleColor, storageTab){
+    storageTab.forEach( product => {
+        if (product.id === articleId){
+            input.value = product[articleColor];
+        }
+    });
+
 }
 
 async function initOfPage(){
