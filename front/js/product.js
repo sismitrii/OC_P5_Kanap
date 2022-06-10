@@ -14,7 +14,6 @@ const quantityTag = document.getElementById('quantity');
 
 let productID;
 
-
 /*====================================================*/
 /* ----------------- Functions -----------------------*/
 /*====================================================*/
@@ -27,10 +26,10 @@ function findProductIDOfPage(){
 }
 
 /* === Use the Id of the product to get all these characteristic === */
-function getProductCharacteristic(){
+async function getProductCharacteristic(){
     findProductIDOfPage();
     let productCharacteristic;
-    fetch(`http://localhost:3000/api/products/${productID}`)
+    /*fetch(`http://localhost:3000/api/products/${productID}`)
         .then(function(res){
             if (res.ok){
                 return res.json();
@@ -45,8 +44,18 @@ function getProductCharacteristic(){
         }).catch(function(err){
             console.log(err);
             showError();
-        });
-    //return productCharacteristic;
+        });*/
+
+        try {
+            const res = await fetch(`http://localhost:3000/api/products/${productID}`);
+            if (res.ok){
+                let productCharacteristic = await res.json();
+                addProductCharacteristic(productCharacteristic);
+            }
+        } catch (error) {
+            console.error(error);
+            showError();
+        }
 }
 
 /* === Add to the DOM the characteristic of the product === */

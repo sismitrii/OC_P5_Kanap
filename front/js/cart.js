@@ -42,7 +42,6 @@ function showProduct(product){
 /* === Add a new product article to the DOM === */
 async function createArticle(id, color, qty){
     let productCharacteristic = await getProductCharacteristic(id); // productCharateristic is a promise
-
     const cartTag = document.getElementById('cart__items');
 
     let article = document.createElement('article');

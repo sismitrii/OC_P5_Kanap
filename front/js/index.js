@@ -5,15 +5,14 @@ const itemsSection = document.getElementById('items');
 
 let productsList = [];
 
-/*====================================================*/
-/* ----------------- Functions -----------------------*/
-/*====================================================*/
+
+
 
 
 
 /* === get the list of all products ===*/
-function getProductsList (){
-    fetch('http://localhost:3000/api/products')
+async function getProductsList (){
+    /*fetch('http://localhost:3000/api/products')
         .then(function(res){
             if(res.ok){         
                 return res.json(); // received Json and parse it to an Javascript Object
@@ -26,23 +25,21 @@ function getProductsList (){
 
         }).catch(function(err){
             showError();
-        });
-}
+        });*/
 
-
-/* === get the charactéristic of each products === */
-
-/*function getProductCharacteristic(productID){
-    fetch(`http://localhost:3000/api/products/${productID}`)
-        .then(function(res){
+        try {
+            const res = await fetch('http://localhost:3000/api/products');
+            let allProducts =[];
             if (res.ok){
-                return res.json();
+                allProducts = await res.json();
+                 allProducts.forEach(product => {
+                    createProductCard(product);
+                });
             }
-        })
-        .then(function(product){
-            console.log(product);
-        })
-}*/
+        } catch (error) {
+            showError();
+        }
+}
 
 /* === create a card for each product on index page === */
 function createProductCard(product){
