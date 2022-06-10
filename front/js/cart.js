@@ -1,15 +1,26 @@
+/*====================================================*/
+/* -------------------- Import -----------------------*/
+/*====================================================*/
+
 import { addIconBag } from "./script.js";
 import { quantityInBag} from "./script.js";
 //import {saveInLocalStorage} from "./product.js";
 
 
+/*====================================================*/
+/* -------------------- Function ---------------------*/
+/*====================================================*/
 
+
+/* ----------------- Part Product Choiced ---------------------*/
+
+/* === Add all the product Choiced to the DOM === */
 function showAllProductChoiced(){
     let allProductTab = getAllproductOfStorage();
     allProductTab.forEach(showProduct);
 }
 
-
+/* === return an array of the products in the local Storage === */
 function getAllproductOfStorage(){
     if (localStorage.kanapProduct !== undefined){
        return JSON.parse(localStorage.kanapProduct); 
@@ -28,6 +39,7 @@ function showProduct(product){
 
 }
 
+/* === Add a new product article to the DOM === */
 async function createArticle(id, color, qty){
     let productCharacteristic = await getProductCharacteristic(id); // productCharateristic is a promise
 
@@ -61,8 +73,9 @@ async function createArticle(id, color, qty){
 
 }
 
-function getProductCharacteristic(productID){
-    return fetch(`http://localhost:3000/api/products/${productID}`)
+/* === Collect Characteristic of a product and return it === */
+async function getProductCharacteristic(productID){
+    /*return fetch(`http://localhost:3000/api/products/${productID}`)
         .then(function(res){
             if (res.ok){
                 return res.json();
@@ -74,11 +87,24 @@ function getProductCharacteristic(productID){
             //productCharacteristic = product;
             //***
         }).catch(function(err){
-            console.log(err);
+            console.error(err);
             //showError();
-        });
+        });*/
+
+        try {
+            const res = await fetch(`http://localhost:3000/api/products/${productID}`);
+            if (res.ok){
+                return res.json();
+            }
+        } catch (error) {
+            console.error(error);
+        }
 }
 
+
+/* ----------------- Part Total ---------------------*/
+
+/* === Add to the DOM the total number of product and the total price === */
 async function showTotal(){
     const totalQuantityTag = document.getElementById('totalQuantity');
     totalQuantityTag.innerText = quantityInBag;
@@ -86,10 +112,11 @@ async function showTotal(){
     totalPriceTag.innerText = await totalPrice();
 }
 
+/* === Calculate the total price === */
 async function totalPrice(){
     let storageTab = getAllproductOfStorage();
     let totalPrice = 0;
-    /*storageTab.forEach( async function(product){
+    /*storageTab.forEach(async function(product){
         let productCharacteristic = await getProductCharacteristic(product.id);
         let price = productCharacteristic.price;
 
@@ -110,11 +137,13 @@ async function totalPrice(){
                 totalPrice += price*product[element];
             }
         }
-        
     }
     return totalPrice;
 }
 
+/* ----------------- Part Change on the Cart ---------------------*/
+
+/* === AddEventListener change on each input that change the quantity choiced of a product === */
 function initEventChangeQuantity(){
     const itemQuantityInputTab = document.querySelectorAll('.itemQuantity');
 ;    itemQuantityInputTab.forEach(input => {
@@ -122,6 +151,7 @@ function initEventChangeQuantity(){
     });
 }
 
+/* === Update Quantity everywhere === */
 function updateQuantity(e){
     let newQuantity = parseInt(e.target.value);
     let articleId = e.target.closest('.cart__item').dataset.id;
@@ -137,8 +167,8 @@ function updateQuantity(e){
     }
 }
 
-function updateLocalStorage(newQuantity, articleId, articleColor, storageTab){;
-    
+/* === Update Quantity in the local Storage === */
+function updateLocalStorage(newQuantity, articleId, articleColor, storageTab){
     storageTab.forEach( product => {
         if (product.id === articleId){
             product[articleColor] = newQuantity;
@@ -149,6 +179,7 @@ function updateLocalStorage(newQuantity, articleId, articleColor, storageTab){;
     
 }
 
+/* === If value entered is wrong modify value of input to have the actual number of prodct choiced === */
 function putBackOldValue(input, articleId, articleColor, storageTab){
     storageTab.forEach( product => {
         if (product.id === articleId){
@@ -159,6 +190,7 @@ function putBackOldValue(input, articleId, articleColor, storageTab){
 
 }
 
+/* === AddEventListener click on each delete button === */
 function initEventDelete(){
     const itemDeleteTab = document.querySelectorAll('.deleteItem');
     itemDeleteTab.forEach( item =>{
@@ -166,6 +198,7 @@ function initEventDelete(){
     })
 }
 
+/* === Delete the product everywhere === */
 function deleteProduct(e){
     let article = e.target.closest('.cart__item')
     let articleId = article.dataset.id;
@@ -178,6 +211,7 @@ function deleteProduct(e){
     showTotal();
 }
 
+/* === Delete the product of the local Storage === */
 function deleteOfStorageTab(storageTab, articleId, articleColor){
     storageTab.forEach( product => {
         if (product.id === articleId){
@@ -191,6 +225,11 @@ function deleteOfStorageTab(storageTab, articleId, articleColor){
     localStorage.kanapProduct = JSON.stringify(storageTab);
 }
 
+
+
+/*====================================================*/
+/* ----------------------- Main ----------------------*/
+/*====================================================*/
 
 async function initOfPage(){
     await showAllProductChoiced();

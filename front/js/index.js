@@ -44,7 +44,7 @@ function getProductsList (){
         })
 }*/
 
-/* === create a card for each product on index page ===*/
+/* === create a card for each product on index page === */
 function createProductCard(product){
     const url = `./product.html?id=${product._id}`;
     const { imageUrl, altTxt, name, description } = product; // Extract Value of product object
@@ -73,7 +73,7 @@ function createProductCard(product){
     itemsSection.appendChild(aTag);
 }
 
-
+/* === Explain to the customers that there are an error in the loading of the products === */
 function showError(){
     const title = document.querySelector('.titles h1');
     title.innerHTML = "Erreur dans le chargement de la page </br>Veuillez nous excusez !";

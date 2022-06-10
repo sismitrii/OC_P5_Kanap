@@ -1,3 +1,7 @@
+/*====================================================*/
+/* -------------------- Import -----------------------*/
+/*====================================================*/
+
 import { addIconBag } from "./script.js";
 
 /*====================================================*/
@@ -70,6 +74,7 @@ function addProductCharacteristic(productCharacteristic){  // How could I just e
     }
 }
 
+/* === Explain to the customers that there are an error in the loading of products === */
 function showError(){
     const article = document.querySelector('.item article');
     article.style = "display : none";
@@ -169,6 +174,7 @@ function resetQuantity(){
 /*====================================================*/
 /* -------------------- Main -------------------------*/
 /*====================================================*/
+
 getProductCharacteristic();
 addToBagButton.addEventListener('click',addToBag);
 colorsSelectTag.addEventListener('change', ()=>{ colorsSelectTag.children[0].removeAttribute("selected")});

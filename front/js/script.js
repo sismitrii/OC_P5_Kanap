@@ -1,24 +1,33 @@
-// pour mettre les programmes commun à toute les pages 
-// comme l'icon au dessus de panier
+/*====================================================*/
+/* ----------------- Variables -----------------------*/
+/*====================================================*/
 
 let productsTab = [];
 let quantityInBag = 0;
 
+/*====================================================*/
+/* ----------------- Functions -----------------------*/
+/*====================================================*/
+
+/* === Create an Icon with the number of product in the bag === */
 export function addIconBag() {
-    countQuantityInBag();// faire le compte
+    countQuantityInBag();
     createIcon();
 }
 
+/* === Count the number of product in the bag === */
 function countQuantityInBag(){
-    getTabOfProduct(); // recuperer le tableau
-    count();//compter le total du tableau
+    getTabOfProduct(); 
+    count();
 }
 
+/* === return an array of the products in the local Storage === */
 function getTabOfProduct(){
     if (localStorage.kanapProduct !== undefined){
        productsTab = JSON.parse(localStorage.kanapProduct); 
     }
 }
+
 
 function count(){
     quantityInBag = 0;
@@ -31,6 +40,7 @@ function count(){
     }
 }
 
+/* === Add some HTML to the DOM to create the icon=== */
 function createIcon(){
     let iconTag = document.getElementById("bag__icon");
     if(productsTab.length > 0){
