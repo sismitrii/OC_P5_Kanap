@@ -378,8 +378,10 @@ function initOrderButton(){
         e.preventDefault();
         getProductIdArray();
         let orderResult = await orderRequest();
-        
-        window.open("./confirmation.html?orderID="+orderResult.orderId);
+        if (orderRequest != undefined){
+            removeAllProductOfLocalStorage();
+            window.open("./confirmation.html?orderID="+orderResult.orderId);
+        }
     })
 }
 
