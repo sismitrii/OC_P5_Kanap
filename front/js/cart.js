@@ -241,12 +241,15 @@ function deleteOfStorageTab(storageTab, articleId, articleColor){
 function initFormChecker(){
     initCheckerFirstName();
     initCheckerLastName();
+    initCheckerAddress();
+    initCheckerCity();
+    initCheckerEmail();
 }
 
 function initCheckerFirstName(){
     const firstNameTag = document.getElementById('firstName');
     const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
-    const regexFirstName = /[0-9!"#\$%&'\(\)\*\+,\.\/\\\[\]\^_`{}|«»]/;
+    const regexFirstName = /[0-9!"#\$%&'\(\)\*\+,;:=£$¥€!?°\.\/\\\[\]\^_`{}|«»]/;
     firstNameTag.addEventListener('change', (e) =>{
         if((!(regexFirstName.test(e.target.value))) && (e.target.value.length >0)){
             userData.firstName = e.target.value;
@@ -256,38 +259,129 @@ function initCheckerFirstName(){
                 delete userData.firstName;
             }
             if (e.target.value.length > 0){
-                firstNameErrorMsg.innerText = "Un prénom ne peut contenir ni chiffre ni charactère spéciaux (à l'exception du tiret)."
+                firstNameErrorMsg.innerText = "Un prénom ne peut contenir ni chiffre ni charactère spéciaux (à l'exception du tiret).";
             } else {
                 firstNameErrorMsg.innerText = "";
             }
         }
-        console.log(userData);
     });   
 }
 
 function initCheckerLastName(){
     const lastNameTag = document.getElementById('lastName');
     const lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
-    const regexlastName = /[0-9!"#\$%&'\(\)\*\+,\.\/\\\[\]\^_`{}|«»]/ ; //    /^[a-zA-Z\-\s]+$/
+    const regexlastName = /[0-9!"#\$%&'\(\)\*\+,;:=£$¥€!?°\.\/\\\[\]\^_`{}|«»]/ ; //    /^[\w\-\s]+$/
     lastNameTag.addEventListener('change', (e) =>{
         if((!(regexlastName.test(e.target.value))) && (e.target.value.length >0)){
             userData.lastName = e.target.value;
             lastNameErrorMsg.innerText = "";
-            console.log("Ok");
         } else {
             if (userData.lastName !== undefined){
                 delete userData.lastName;
             }
             if (e.target.value.length > 0){
-                lastNameErrorMsg.innerText = "Un nom ne peut contenir ni chiffre ni charactère spéciaux (à l'exception du tiret)."
+                lastNameErrorMsg.innerText = "Un nom ne peut contenir ni chiffre ni charactère spéciaux (à l'exception du tiret).";
             } else {
                 lastNameErrorMsg.innerText = ""; 
             }
         }
-    console.log(userData);
     });
     
 }
+
+function initCheckerAddress(){
+    const addressTagName = document.getElementById('address');
+    const addressErrorMsg = document.getElementById('addressErrorMsg');
+    const regexAddress = /[!"#\$%&\(\)\*\+;:=£¥€!?°\.\/\\\[\]\^_`{}|«»]/;
+
+    addressTagName.addEventListener('change', (e) => {
+        if((!(regexAddress.test(e.target.value))) && (e.target.value.length > 0)){
+            userData.address = e.target.value;
+            addressErrorMsg.innerText = "";
+        } else {
+            if (userData.address !== undefined){
+                delete userData.address;
+            }
+            if (e.target.value.length > 0){
+                addressErrorMsg.innerText = "Veuillez entrez une adresse correcte. | Ex: 10 quai de la charente";
+            } else {
+                addressErrorMsg.innerText = ""; 
+            }
+        }
+    });
+}
+
+
+function initCheckerCity(){
+    const cityTagName = document.getElementById('city');
+    const cityErrorMsg = document.getElementById('cityErrorMsg');
+    const regexCity = /[0-9!"'#\$%&\(\)\*\+,;:=£¥€!?°\.\/\\\[\]\^_`{}|«»]/;
+    cityTagName.addEventListener('change', (e) =>{
+        if((!(regexCity.test(e.target.value))) && (e.target.value.length > 0)){
+            userData.city = e.target.value;
+            cityErrorMsg.innerText = "";
+        } else {
+            if (userData.city !== undefined){
+                delete userData.city;
+            } 
+            if (e.target.value.length > 0){
+                cityErrorMsg.innerText = "Veuillez entrer un nom de ville correct. | Ex: Bézieux";
+            } else {
+                cityErrorMsg.innerText = ""; 
+            }
+        }
+    });
+}
+
+function initCheckerEmail(){
+    // /^\w+([\.-]*\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/    
+    // /^\w+([\.-]?\w+)* Must start with 1 or more word char followed by 0 or more . ou - and with at least one last word char
+    // @\w+  after @ 1 or more char
+    // ([\.-]?\w+)* 0 or 1 . or - followed by minus 1 char
+    // (\.\w{2,4})+$/  ending with 1 or more "." and between 2 and 4 word char
+
+    // /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$
+    const emailTagName = document.getElementById('email');
+    const emailErrorMsg = document.getElementById('emailErrorMsg');
+    const regexEmail = /^\w+([\.-]*\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+    emailTagName.addEventListener('change', (e) => {
+        if( regexEmail.test(e.target.value)){
+            userData.email = e.target.value;
+            emailErrorMsg.innerText = "";
+        } else {
+            if (userData.email !== undefined){
+                delete userData.email;
+            }
+            if (e.target.value.length > 0){
+                emailErrorMsg.innerText = "Veuillez rentrez une adresse email correcte. | Ex: monadresse@kanap.com"
+            } else {
+                emailErrorMsg.innerText = ""; 
+            }
+        }
+    });
+    
+}
+
+/*function initOrderButton(){
+    const orderButton = document.getElementById('order');
+    orderButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        checkUserData();
+    })
+}
+
+function checkUserData(){
+    let dataExpected = ["firstName", "lastName", "address", "city", "email"];
+
+    dataExpected.forEach(data =>{
+        if (userData[data] === undefined){
+            const errorTag = document.getElementById(data);
+            errorTag.style.background = "#db5353";
+        }
+    })
+}
+*/
+
 
 
 /*====================================================*/
@@ -301,6 +395,7 @@ async function initOfPage(){
     initEventChangeQuantity();
     initEventDelete();
     initFormChecker();
+    initOrderButton();
 }
 
 initOfPage();
