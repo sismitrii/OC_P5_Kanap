@@ -434,7 +434,7 @@ async function orderRequest(){
 }
 
 function removeAllProductOfLocalStorage(){
-
+    localStorage.removeItem('kanapProduct');
 }
 
 
