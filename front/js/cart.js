@@ -380,7 +380,7 @@ function initOrderButton(){
         let orderResult = await orderRequest();
         if (orderRequest != undefined){
             removeAllProductOfLocalStorage();
-            window.open("./confirmation.html?orderID="+orderResult.orderId);
+            location.replace("./confirmation.html?orderID="+orderResult.orderId);
         }
     })
 }
@@ -433,7 +433,9 @@ async function orderRequest(){
 
 }
 
+function removeAllProductOfLocalStorage(){
 
+}
 
 
 /*====================================================*/
