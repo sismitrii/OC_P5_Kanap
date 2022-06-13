@@ -8,6 +8,13 @@ import { quantityInBag} from "./script.js";
 
 
 /*====================================================*/
+/* ------------------- Variables ---------------------*/
+/*====================================================*/
+let userData = {};
+let products = [];
+
+
+/*====================================================*/
 /* -------------------- Function ---------------------*/
 /*====================================================*/
 
@@ -236,8 +243,6 @@ function deleteOfStorageTab(storageTab, articleId, articleColor){
     // envoyer l'objet avec les infos des inputs et le tableau d'ID
     // recup' le numéro de commande et le mettre dans une url de la page confirmation.html
 
-
-    let userData = {};
 function initFormChecker(){
     initCheckerFirstName();
     initCheckerLastName();
@@ -254,6 +259,7 @@ function initCheckerFirstName(){
         if((!(regexFirstName.test(e.target.value))) && (e.target.value.length >0)){
             userData.firstName = e.target.value;
             firstNameErrorMsg.innerText = "";
+            firstNameErrorMsg.style.background = "white";
         } else {
             if (userData.firstName !== undefined){
                 delete userData.firstName;
@@ -275,6 +281,7 @@ function initCheckerLastName(){
         if((!(regexlastName.test(e.target.value))) && (e.target.value.length >0)){
             userData.lastName = e.target.value;
             lastNameErrorMsg.innerText = "";
+            lastNameTag.style.background = "white";
         } else {
             if (userData.lastName !== undefined){
                 delete userData.lastName;
@@ -298,6 +305,7 @@ function initCheckerAddress(){
         if((!(regexAddress.test(e.target.value))) && (e.target.value.length > 0)){
             userData.address = e.target.value;
             addressErrorMsg.innerText = "";
+            addressTagName.style.background = "white";
         } else {
             if (userData.address !== undefined){
                 delete userData.address;
@@ -320,6 +328,7 @@ function initCheckerCity(){
         if((!(regexCity.test(e.target.value))) && (e.target.value.length > 0)){
             userData.city = e.target.value;
             cityErrorMsg.innerText = "";
+            cityTagName.style.background = "white";
         } else {
             if (userData.city !== undefined){
                 delete userData.city;
@@ -348,6 +357,7 @@ function initCheckerEmail(){
         if( regexEmail.test(e.target.value)){
             userData.email = e.target.value;
             emailErrorMsg.innerText = "";
+            emailTagName.style.background = "white";
         } else {
             if (userData.email !== undefined){
                 delete userData.email;
@@ -362,25 +372,39 @@ function initCheckerEmail(){
     
 }
 
-/*function initOrderButton(){
+function initOrderButton(){
     const orderButton = document.getElementById('order');
     orderButton.addEventListener('click', (e) => {
         e.preventDefault();
-        checkUserData();
+        getProductIdArray();
+        
     })
 }
 
 function checkUserData(){
     let dataExpected = ["firstName", "lastName", "address", "city", "email"];
 
-    dataExpected.forEach(data =>{
+    for (let data of dataExpected){
         if (userData[data] === undefined){
             const errorTag = document.getElementById(data);
             errorTag.style.background = "#db5353";
+            errorTag.previousElementSibling.scrollIntoView();
+            // utilisation de setTimeout pour faire une animation de non
+            return false;
         }
-    })
+    return true;
+    }
 }
-*/
+
+function getProductIdArray(){
+    if(checkUserData()){
+        products = getAllproductOfStorage();
+        products = products.map(product =>{
+            return product.id;
+        });
+    };
+}
+
 
 
 
