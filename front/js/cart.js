@@ -374,10 +374,12 @@ function initCheckerEmail(){
 
 function initOrderButton(){
     const orderButton = document.getElementById('order');
-    orderButton.addEventListener('click', (e) => {
+    orderButton.addEventListener('click', async function(e) {
         e.preventDefault();
         getProductIdArray();
+        let orderResult = await orderRequest();
         
+        window.open("./confirmation.html?orderID="+orderResult.orderId);
     })
 }
 
@@ -403,6 +405,30 @@ function getProductIdArray(){
             return product.id;
         });
     };
+}
+
+async function orderRequest(){
+    let object = {
+        contact : userData,
+        products : products
+    }
+    let test;
+    try {
+        let res = await fetch("http://localhost:3000/api/products/order", {
+            method: "POST",
+            headers: { 
+                'Accept': 'application/json', 
+                'Content-Type': 'application/json' 
+            },
+                body: JSON.stringify(object)
+            });
+            if (res.ok){
+                return res.json();
+            }
+    } catch (error) {
+        console.error(error);
+    }
+
 }
 
 
