@@ -224,6 +224,70 @@ function deleteOfStorageTab(storageTab, articleId, articleColor){
     localStorage.kanapProduct = JSON.stringify(storageTab);
 }
 
+// a l'appui sur commander
+
+    // Il faut recuperer les infos value des input et les mettre dans un objet
+    // checker ses infos
+        //correct les enregister dans un object
+        // incorrect afficher un message d'erreur + mettre background de l'input en rouge?
+    
+    // faire un tableau d'id avec les produit commandés
+
+    // envoyer l'objet avec les infos des inputs et le tableau d'ID
+    // recup' le numéro de commande et le mettre dans une url de la page confirmation.html
+
+
+    let userData = {};
+function initFormChecker(){
+    initCheckerFirstName();
+    initCheckerLastName();
+}
+
+function initCheckerFirstName(){
+    const firstNameTag = document.getElementById('firstName');
+    const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
+    const regexFirstName = /[0-9!"#\$%&'\(\)\*\+,\.\/\\\[\]\^_`{}|«»]/;
+    firstNameTag.addEventListener('change', (e) =>{
+        if((!(regexFirstName.test(e.target.value))) && (e.target.value.length >0)){
+            userData.firstName = e.target.value;
+            firstNameErrorMsg.innerText = "";
+        } else {
+            if (userData.firstName !== undefined){
+                delete userData.firstName;
+            }
+            if (e.target.value.length > 0){
+                firstNameErrorMsg.innerText = "Un prénom ne peut contenir ni chiffre ni charactère spéciaux (à l'exception du tiret)."
+            } else {
+                firstNameErrorMsg.innerText = "";
+            }
+        }
+        console.log(userData);
+    });   
+}
+
+function initCheckerLastName(){
+    const lastNameTag = document.getElementById('lastName');
+    const lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
+    const regexlastName = /[0-9!"#\$%&'\(\)\*\+,\.\/\\\[\]\^_`{}|«»]/ ; //    /^[a-zA-Z\-\s]+$/
+    lastNameTag.addEventListener('change', (e) =>{
+        if((!(regexlastName.test(e.target.value))) && (e.target.value.length >0)){
+            userData.lastName = e.target.value;
+            lastNameErrorMsg.innerText = "";
+            console.log("Ok");
+        } else {
+            if (userData.lastName !== undefined){
+                delete userData.lastName;
+            }
+            if (e.target.value.length > 0){
+                lastNameErrorMsg.innerText = "Un nom ne peut contenir ni chiffre ni charactère spéciaux (à l'exception du tiret)."
+            } else {
+                lastNameErrorMsg.innerText = ""; 
+            }
+        }
+    console.log(userData);
+    });
+    
+}
 
 
 /*====================================================*/
@@ -236,6 +300,7 @@ async function initOfPage(){
 
     initEventChangeQuantity();
     initEventDelete();
+    initFormChecker();
 }
 
 initOfPage();
