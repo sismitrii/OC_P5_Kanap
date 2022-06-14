@@ -386,7 +386,7 @@ function initOrderButton(){
                 removeAllProductOfLocalStorage();
                 location.replace("./confirmation.html?orderID="+orderResult.orderId);
             }
-        } else {
+        } else if (JSON.parse(localStorage.kanapProduct).length <= 0){
             titleBagTag.scrollIntoView();
         }
     })
@@ -394,17 +394,18 @@ function initOrderButton(){
 
 function checkUserData(){
     let dataExpected = ["firstName", "lastName", "address", "city", "email"];
-
+    
     for (let data of dataExpected){
         if (userData[data] === undefined){
             const errorTag = document.getElementById(data);
             errorTag.style.background = "#db5353";
             errorTag.previousElementSibling.scrollIntoView();
+            
             // utilisation de setTimeout pour faire une animation de non
             return false;
         }
-    return true;
     }
+    return true;
 }
 
 function getProductIdArray(){
