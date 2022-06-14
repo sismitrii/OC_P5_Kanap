@@ -44,12 +44,15 @@ function showProduct(product){
     for (let element in product){
         if (element != "id"){
             order++;
+
             createArticle(id, element, product[element],order);
+
         }
     }
 }
 
 /* === Add a new product article to the DOM === */
+
 async function createArticle(id, color, qty,orderToCreate){
     let productCharacteristic = await getProductCharacteristic(id);
     const cartTag = document.getElementById('cart__items');
