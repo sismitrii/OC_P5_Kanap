@@ -26,9 +26,7 @@ function findProductIDOfPage(){
 }
 
 /* === Use the Id of the product to get all these characteristic === */
-async function getProductCharacteristic(){
-    findProductIDOfPage();
-    let productCharacteristic;
+export async function getProductCharacteristic(productID){
     /*fetch(`http://localhost:3000/api/products/${productID}`)
         .then(function(res){
             if (res.ok){
@@ -99,13 +97,15 @@ function addToBag(){
     let quantity = parseInt(quantityTag.value);  // quantityTag.value is a string
     let colorChoice = colorsSelectTag.value;
     if (checkValue(quantity, colorChoice)){
-        if (localStorage.kanapProduct === undefined){
+        // check if kanapProduct already exist in the localStorage
+        if (localStorage.kanapProduct === undefined){ 
             createBag(quantity, colorChoice);
             resetQuantity();
         } else {
             let kanapProductTab = JSON.parse(localStorage.kanapProduct);
             let rankOfSameId = -1; 
             for (let product in kanapProductTab){
+                //check if there are already an object of this product in kanapProduct
                 if (kanapProductTab[product].id === productID){
                     rankOfSameId = product;   
                 } 
@@ -114,6 +114,7 @@ function addToBag(){
                 addNewProductInBag(quantity, colorChoice, kanapProductTab);
                 resetQuantity();
             } else {
+                // check if in the object of the same product the colorChoiced already exist or not
                 if (kanapProductTab[rankOfSameId][colorChoice] === undefined){
                      addNewColor(quantity, colorChoice, kanapProductTab, rankOfSameId);
                      resetQuantity();
@@ -123,6 +124,7 @@ function addToBag(){
                 }
             }
         }
+        // Refresh number of product in bag
         addIconBag();
     }
 }
@@ -144,16 +146,14 @@ function checkValue(quantity, colorChoice){
  }
 
  /* ===  Save the tab with all product choiced in the Local Storage === */
-function saveInLocalStorage(tab){
+export function saveInLocalStorage(tab){
     localStorage.kanapProduct = JSON.stringify(tab);
 }
 
 /* === If they are nothing else already choiced create the tab to save in the local Storage === */
 function createBag(quantity, colorChoice){
-    let tab = [{
-        id : productID,
-        [colorChoice] : quantity
-    }]
+    let tab = [];
+    addNewProductInBag(quantity, colorChoice, tab);
     saveInLocalStorage(tab);
 }
 
@@ -189,9 +189,8 @@ function resetQuantity(){
     colorsSelectTag.children[0].setAttribute("selected", "");
 }
 
+/* === Advise user adding to DOM an error message that explain what happen wrong === */
 export function advise(errorType, quantityPartTag = document.querySelector('.item__content__settings__quantity')){
-    //const quantityPartTag = document.querySelector('.item__content__settings__quantity');
-    
     const adviseTag = document.createElement('p');
     if (errorType === "color"){
         adviseTag.innerText = "Veuillez selectionner une couleur";
@@ -201,10 +200,10 @@ export function advise(errorType, quantityPartTag = document.querySelector('.ite
         adviseTag.classList.add('valueErrorMsg');
     }
     adviseTag.style = "color : #fbbcbc; font-size : 12px; margin-left:10px;";
-    console.log(quantityPartTag);
     quantityPartTag.appendChild(adviseTag);
 }
 
+/* === Remove th message that explain what happen wrong === */
 export function removeAdvise(className){
     const adviseTag = document.querySelector(`.${className}`);
     if (adviseTag !== null){
@@ -215,7 +214,7 @@ export function removeAdvise(className){
 /*====================================================*/
 /* -------------------- Main -------------------------*/
 /*====================================================*/
-
-getProductCharacteristic();
+findProductIDOfPage();
+getProductCharacteristic(productID);
 addToBagButton.addEventListener('click',addToBag);
 colorsSelectTag.addEventListener('change', ()=>{ colorsSelectTag.children[0].removeAttribute("selected")});

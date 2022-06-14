@@ -2,10 +2,8 @@
 /* -------------------- Import -----------------------*/
 /*====================================================*/
 
-import { addIconBag } from "./script.js";
-import { quantityInBag} from "./script.js";
-//import { advise, removeAdvise } from "./product.js";
-//import {saveInLocalStorage} from "./product.js";
+import { addIconBag, getAllproductOfStorage, quantityInBag } from "./script.js";
+//import { advise, removeAdvise, saveInLocalStorage, getProductCharacteristic } from "./product.js";
 
 
 /*====================================================*/
@@ -13,14 +11,13 @@ import { quantityInBag} from "./script.js";
 /*====================================================*/
 let userData = {};
 let products = [];
+let order = 0;
 
 const titleBagTag = document.querySelector('.cartAndFormContainer h1');
-
 
 /*====================================================*/
 /* -------------------- Function ---------------------*/
 /*====================================================*/
-
 
 /* ----------------- Part Product Choiced ---------------------*/
 
@@ -30,21 +27,11 @@ function showAllProductChoiced(){
     allProductTab.forEach(showProduct);
 }
 
-/* === return an array of the products in the local Storage === */
-function getAllproductOfStorage(){
-    if (localStorage.kanapProduct !== undefined){
-       return JSON.parse(localStorage.kanapProduct); 
-    } 
-    return [];
-}
-
-let order = 0;
 function showProduct(product){
     let id = product.id;
     for (let element in product){
         if (element != "id"){
             order++;
-
             createArticle(id, element, product[element],order);
 
         }
@@ -52,7 +39,6 @@ function showProduct(product){
 }
 
 /* === Add a new product article to the DOM === */
-
 async function createArticle(id, color, qty,orderToCreate){
     let productCharacteristic = await getProductCharacteristic(id);
     const cartTag = document.getElementById('cart__items');
@@ -130,18 +116,6 @@ async function showTotal(){
 async function totalPrice(){
     let storageTab = getAllproductOfStorage();
     let totalPrice = 0;
-    /*storageTab.forEach(async function(product){
-        let productCharacteristic = await getProductCharacteristic(product.id);
-        let price = productCharacteristic.price;
-
-        for (let element in product){
-            if (element != "id"){
-                totalPrice += price*product[element];
-            }
-        }
-        console.log(totalPrice); 
-        return totalPrice;
-    });*/
 
     for (let product of storageTab){
         let productCharacteristic = await getProductCharacteristic(product.id);
@@ -237,21 +211,11 @@ function deleteOfStorageTab(storageTab, articleId, articleColor){
             }
         }
     });
+    //saveInLocalStorage(storageTab);
     localStorage.kanapProduct = JSON.stringify(storageTab);
 }
 
-// a l'appui sur commander
-
-    // Il faut recuperer les infos value des input et les mettre dans un objet
-    // checker ses infos
-        //correct les enregister dans un object
-        // incorrect afficher un message d'erreur + mettre background de l'input en rouge?
-    
-    // faire un tableau d'id avec les produit commandés
-
-    // envoyer l'objet avec les infos des inputs et le tableau d'ID
-    // recup' le numéro de commande et le mettre dans une url de la page confirmation.html
-
+/* === Initialise all the EventListener that check if value entered have the correct format === */
 function initFormChecker(){
     initCheckerFirstName();
     initCheckerLastName();
@@ -260,9 +224,11 @@ function initFormChecker(){
     initCheckerEmail();
 }
 
+/* === Event Listener check format of firstName  === */
 function initCheckerFirstName(){
     const firstNameTag = document.getElementById('firstName');
     const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
+    // number and spécial characters not authorised ( except special character of letter : é,è,ï,ù,etc..)
     const regexFirstName = /[0-9!"#\$%&'\(\)\*\+,;:=£$¥€!?°\.\/\\\[\]\^_`{}|«»]/;
     firstNameTag.addEventListener('change', (e) =>{
         if((!(regexFirstName.test(e.target.value))) && (e.target.value.length >0)){
@@ -282,6 +248,7 @@ function initCheckerFirstName(){
     });   
 }
 
+/* === Event Listener check format of lastName  === */
 function initCheckerLastName(){
     const lastNameTag = document.getElementById('lastName');
     const lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
@@ -305,9 +272,11 @@ function initCheckerLastName(){
     
 }
 
+/* === Event Listener check format of Address  === */
 function initCheckerAddress(){
     const addressTagName = document.getElementById('address');
     const addressErrorMsg = document.getElementById('addressErrorMsg');
+    // number are here authorised but not spécal characters
     const regexAddress = /[!"#\$%&\(\)\*\+;:=£¥€!?°\.\/\\\[\]\^_`{}|«»]/;
 
     addressTagName.addEventListener('change', (e) => {
@@ -328,7 +297,7 @@ function initCheckerAddress(){
     });
 }
 
-
+/* === Event Listener check format of city  === */
 function initCheckerCity(){
     const cityTagName = document.getElementById('city');
     const cityErrorMsg = document.getElementById('cityErrorMsg');
@@ -351,6 +320,7 @@ function initCheckerCity(){
     });
 }
 
+/* === Event Listener check format of email === */
 function initCheckerEmail(){
     // /^\w+([\.-]*\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/    
     // /^\w+([\.-]?\w+)* Must start with 1 or more word char followed by 0 or more . ou - and with at least one last word char
@@ -377,10 +347,10 @@ function initCheckerEmail(){
                 emailErrorMsg.innerText = ""; 
             }
         }
-    });
-    
+    });   
 }
 
+/* === Initialisation of event Listener to order and send the request === */
 function initOrderButton(){
     const orderButton = document.getElementById('order');
     orderButton.addEventListener('click', async function(e) {
@@ -398,6 +368,7 @@ function initOrderButton(){
     })
 }
 
+/* === Check if all input are correct and if not indicate it to user === */
 function checkUserData(){
     let dataExpected = ["firstName", "lastName", "address", "city", "email"];
     
@@ -413,6 +384,7 @@ function checkUserData(){
     return true;
 }
 
+/* === Set products as an array with all the productId ordered === */
 function getProductIdArray(){
     if(checkUserData()){
         products = getAllproductOfStorage();
@@ -422,6 +394,7 @@ function getProductIdArray(){
     };
 }
 
+/* === Post the order of products === */
 async function orderRequest(){
     let object = {
         contact : userData,
@@ -446,10 +419,12 @@ async function orderRequest(){
 
 }
 
+/* === Delete array kanap Product of the LocalStorage === */
 function removeAllProductOfLocalStorage(){
     localStorage.removeItem('kanapProduct');
 }
 
+/* === Change title of page if bag is empty === */
 function checkerBag(){
     if ((localStorage.kanapProduct === undefined) || (JSON.parse(localStorage.kanapProduct).length <= 0)){
         titleBagTag.innerText = "Votre panier est vide";

@@ -5,13 +5,8 @@ const itemsSection = document.getElementById('items');
 
 let productsList = [];
 
-
-
-
-
-
-/* === get the list of all products ===*/
-async function getProductsList (){
+/* === Initialise the list of all products on homepage ===*/
+async function initProductsList (){
     /*fetch('http://localhost:3000/api/products')
         .then(function(res){
             if(res.ok){         
@@ -41,31 +36,20 @@ async function getProductsList (){
         }
 }
 
-/* === create a card for each product on index page === */
+/* === Create a card for each product on index page === */
 function createProductCard(product){
     const url = `./product.html?id=${product._id}`;
-    const { imageUrl, altTxt, name, description } = product; // Extract Value of product object
+    const { imageUrl, altTxt, name, description } = product; // Extract Value of product object ES6
     
-    const imageTag = document.createElement('img');
-    imageTag.setAttribute("src", imageUrl);
-    imageTag.setAttribute("alt", altTxt);
-
-    const nameTag = document.createElement('h3');
-    nameTag.classList.add('productName');
-    nameTag.innerText = name;
-
-    const descriptionTag = document.createElement('p');
-    descriptionTag.classList.add('productDescription');
-    descriptionTag.innerText= description;
-
-    const articleTag = document.createElement('article');
-    articleTag.appendChild(imageTag);
-    articleTag.appendChild(nameTag);
-    articleTag.appendChild(descriptionTag);
-
     const aTag = document.createElement('a');
     aTag.setAttribute("href", url);
-    aTag.appendChild(articleTag);
+
+    aTag.innerHTML = `
+        <article>
+            <img src="${imageUrl}" alt="${altTxt}">
+            <h3 class="productName">${name}</h3>
+            <p class="productDescription">${description}</p>
+        </article>`;
 
     itemsSection.appendChild(aTag);
 }
@@ -82,4 +66,4 @@ function showError(){
 /* -------------------- Main -------------------------*/
 /*====================================================*/
 
-getProductsList();
+initProductsList();

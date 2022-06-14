@@ -1,7 +1,6 @@
 /*====================================================*/
 /* ----------------- Variables -----------------------*/
 /*====================================================*/
-
 let productsTab = [];
 let quantityInBag = 0;
 
@@ -17,15 +16,22 @@ export function addIconBag() {
 
 /* === Count the number of product in the bag === */
 function countQuantityInBag(){
-    getTabOfProduct(); 
+    productsTab = getAllproductOfStorage(); 
     count();
 }
 
-/* === return an array of the products in the local Storage === */
-function getTabOfProduct(){
+/* === Return an array of the products in the local Storage === */
+/*function getTabOfProduct(){
     if (localStorage.kanapProduct !== undefined){
        productsTab = JSON.parse(localStorage.kanapProduct); 
     }
+}*/
+
+export function getAllproductOfStorage(){
+    if (localStorage.kanapProduct !== undefined){
+       return JSON.parse(localStorage.kanapProduct); 
+    } 
+    return [];
 }
 
 
