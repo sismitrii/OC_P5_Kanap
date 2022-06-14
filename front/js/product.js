@@ -101,6 +101,7 @@ function addToBag(){
     if (checkValue(quantity, colorChoice)){
         if (localStorage.kanapProduct === undefined){
             createBag(quantity, colorChoice);
+            resetQuantity();
         } else {
             let kanapProductTab = JSON.parse(localStorage.kanapProduct);
             let rankOfSameId = -1; 
@@ -111,25 +112,34 @@ function addToBag(){
             }
             if (rankOfSameId < 0){
                 addNewProductInBag(quantity, colorChoice, kanapProductTab);
+                resetQuantity();
             } else {
                 if (kanapProductTab[rankOfSameId][colorChoice] === undefined){
                      addNewColor(quantity, colorChoice, kanapProductTab, rankOfSameId);
+                     resetQuantity();
                 } else {
                     updateQuantity(quantity, colorChoice, kanapProductTab, rankOfSameId)
+                    resetQuantity();
                 }
             }
         }
-        resetQuantity();
         addIconBag();
     }
 }
 
 /* === check if quantity and color have been choiced and if not inform customers === */
 function checkValue(quantity, colorChoice){
-    if((colorChoice === "") || (quantity < 1) || (quantity >100)){
-      return false;   
-    }
-    //advise();
+    removeAdvise("valueErrorMsg");
+    removeAdvise("colorErrorMsg");
+    if((colorChoice === "") || (quantity < 1) || (quantity >100)) {
+        if (colorChoice === ""){
+            advise("color");
+        }
+        if((quantity < 1) || (quantity >100)){
+            advise("value");
+        }
+        return false; 
+    } 
     return true;
  }
 
@@ -178,6 +188,28 @@ function updateQuantity(quantity, colorChoice, tab, rank){
 function resetQuantity(){
     quantityTag.value = 0;
     colorsSelectTag.children[0].setAttribute("selected", "");
+}
+
+function advise(errorType){
+    const quantityPartTag = document.querySelector('.item__content__settings__quantity');
+
+    const adviseTag = document.createElement('p');
+    if (errorType === "color"){
+        adviseTag.innerText = "Veuillez selectionner une couleur";
+        adviseTag.classList.add('colorErrorMsg');
+    } else if (errorType === "value"){
+        adviseTag.innerText = "Veuillez entrez une valeur comprise entre 1 et 100";
+        adviseTag.classList.add('valueErrorMsg');
+    }
+    adviseTag.style = "color : #fbbcbc; font-size : 15px";
+    quantityPartTag.appendChild(adviseTag);
+}
+
+function removeAdvise(className){
+    const adviseTag = document.querySelector(`.${className}`);
+    if (adviseTag !== null){
+        adviseTag.remove();
+    }
 }
 
 /*====================================================*/
