@@ -43,6 +43,13 @@ function count(){
 /* === Add some HTML to the DOM to create the icon=== */
 function createIcon(){
     let iconTag = document.getElementById("bag__icon");
+    let topPosition = "30";
+    let windowsSizeCheck = window.matchMedia("(max-width:575.98px)"); // MediaQueryList
+    console.log(windowsSizeCheck);
+    if (windowsSizeCheck.matches){ // matches === true if size condition(media) is not exceed
+        topPosition = "5";
+    }
+
     if(productsTab.length > 0){
         if (iconTag === null){
             const icon = document.createElement('div');
@@ -54,7 +61,7 @@ function createIcon(){
             align-item :center;
             width : 25px;
             height : 25px;
-            top : 30px;
+            top : ${topPosition}px;
             right : -20px;
             border-radius : 50%;
             color : white;
