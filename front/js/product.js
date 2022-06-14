@@ -185,9 +185,9 @@ function resetQuantity(){
     colorsSelectTag.children[0].setAttribute("selected", "");
 }
 
-function advise(errorType){
-    const quantityPartTag = document.querySelector('.item__content__settings__quantity');
-
+export function advise(errorType, quantityPartTag = document.querySelector('.item__content__settings__quantity')){
+    //const quantityPartTag = document.querySelector('.item__content__settings__quantity');
+    
     const adviseTag = document.createElement('p');
     if (errorType === "color"){
         adviseTag.innerText = "Veuillez selectionner une couleur";
@@ -196,11 +196,12 @@ function advise(errorType){
         adviseTag.innerText = "Veuillez entrez une valeur comprise entre 1 et 100";
         adviseTag.classList.add('valueErrorMsg');
     }
-    adviseTag.style = "color : #fbbcbc; font-size : 15px";
+    adviseTag.style = "color : #fbbcbc; font-size : 12px; margin-left:10px;";
+    console.log(quantityPartTag);
     quantityPartTag.appendChild(adviseTag);
 }
 
-function removeAdvise(className){
+export function removeAdvise(className){
     const adviseTag = document.querySelector(`.${className}`);
     if (adviseTag !== null){
         adviseTag.remove();

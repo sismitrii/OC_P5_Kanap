@@ -4,6 +4,7 @@
 
 import { addIconBag } from "./script.js";
 import { quantityInBag} from "./script.js";
+import { advise, removeAdvise } from "./product.js";
 //import {saveInLocalStorage} from "./product.js";
 
 
@@ -45,7 +46,6 @@ function showProduct(product){
             createArticle(id, element, product[element]);
         }
     }
-
 }
 
 /* === Add a new product article to the DOM === */
@@ -192,7 +192,7 @@ function putBackOldValue(input, articleId, articleColor, storageTab){
     storageTab.forEach( product => {
         if (product.id === articleId){
             input.value = product[articleColor];
-            //advise()
+            advise("value",input.parentElement);
         }
     });
 
@@ -400,7 +400,6 @@ function checkUserData(){
             const errorTag = document.getElementById(data);
             errorTag.style.background = "#db5353";
             errorTag.previousElementSibling.scrollIntoView();
-            
             // utilisation de setTimeout pour faire une animation de non
             return false;
         }
