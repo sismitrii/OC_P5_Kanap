@@ -174,7 +174,11 @@ function addNewColor(quantity, colorChoice, tab, rank){
 
 /* === Update the quantity if that product have already been choiced === */
 function updateQuantity(quantity, colorChoice, tab, rank){
-    tab[rank][colorChoice] += quantity;
+    if (tab[rank][colorChoice] + quantity <= 100){
+        tab[rank][colorChoice] += quantity;
+    } else {
+        tab[rank][colorChoice] = 100;
+    }
     saveInLocalStorage(tab);
 }
 
