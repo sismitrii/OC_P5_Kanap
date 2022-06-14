@@ -4,7 +4,7 @@
 
 import { addIconBag } from "./script.js";
 import { quantityInBag} from "./script.js";
-import { advise, removeAdvise } from "./product.js";
+//import { advise, removeAdvise } from "./product.js";
 //import {saveInLocalStorage} from "./product.js";
 
 
@@ -38,11 +38,12 @@ function getAllproductOfStorage(){
     return [];
 }
 
-
+let order = 0;
 function showProduct(product){
     let id = product.id;
     for (let element in product){
         if (element != "id"){
+            order++;
             createArticle(id, element, product[element]);
         }
     }
@@ -50,11 +51,14 @@ function showProduct(product){
 
 /* === Add a new product article to the DOM === */
 async function createArticle(id, color, qty){
-    let productCharacteristic = await getProductCharacteristic(id); // productCharateristic is a promise
+    console.log(order);
+    let productCharacteristic = await getProductCharacteristic(id);
     const cartTag = document.getElementById('cart__items');
+    cartTag.style = "display: flex; flex-direction:column";
 
     let article = document.createElement('article');
     article.classList.add('cart__item');
+    article.style = `order : ${order};`; // trick to have same kind of product grouped
     article.dataset.id = id;
     article.dataset.color = color;
     article.innerHTML = `<div class="cart__item__img">
@@ -192,7 +196,7 @@ function putBackOldValue(input, articleId, articleColor, storageTab){
     storageTab.forEach( product => {
         if (product.id === articleId){
             input.value = product[articleColor];
-            advise("value",input.parentElement);
+            //advise("value",input.parentElement);
         }
     });
 
