@@ -13,6 +13,8 @@ import { quantityInBag} from "./script.js";
 let userData = {};
 let products = [];
 
+const titleBagTag = document.querySelector('.cartAndFormContainer h1');
+
 
 /*====================================================*/
 /* -------------------- Function ---------------------*/
@@ -215,6 +217,7 @@ function deleteProduct(e){
     article.remove();
     addIconBag();
     showTotal();
+    checkerBag();
 }
 
 /* === Delete the product of the local Storage === */
@@ -377,10 +380,14 @@ function initOrderButton(){
     orderButton.addEventListener('click', async function(e) {
         e.preventDefault();
         getProductIdArray();
-        let orderResult = await orderRequest();
-        if (orderRequest != undefined){
-            removeAllProductOfLocalStorage();
-            location.replace("./confirmation.html?orderID="+orderResult.orderId);
+        if (products.length > 0){
+            let orderResult = await orderRequest();
+            if (orderRequest != undefined){
+                removeAllProductOfLocalStorage();
+                location.replace("./confirmation.html?orderID="+orderResult.orderId);
+            }
+        } else {
+            titleBagTag.scrollIntoView();
         }
     })
 }
@@ -437,6 +444,14 @@ function removeAllProductOfLocalStorage(){
     localStorage.removeItem('kanapProduct');
 }
 
+function checkerBag(){
+    if ((localStorage.kanapProduct === undefined) || (JSON.parse(localStorage.kanapProduct).length <= 0)){
+        titleBagTag.innerText = "Votre panier est vide";
+    } else {
+        titleBagTag.innerText = "Votre panier";
+    }
+}
+
 
 /*====================================================*/
 /* ----------------------- Main ----------------------*/
@@ -448,6 +463,7 @@ async function initOfPage(){
 
     initEventChangeQuantity();
     initEventDelete();
+    checkerBag();
     initFormChecker();
     initOrderButton();
 }
