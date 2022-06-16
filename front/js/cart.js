@@ -72,35 +72,6 @@ async function createArticle(id, color, qty,orderToCreate){
 
 }
 
-/* === Collect Characteristic of a product and return it === */
-async function getProductCharacteristic(productID){
-    /*return fetch(`http://localhost:3000/api/products/${productID}`)
-        .then(function(res){
-            if (res.ok){
-                return res.json();
-            }
-        })
-        .then(function(product){
-            return product;
-
-            //productCharacteristic = product;
-            //***
-        }).catch(function(err){
-            console.error(err);
-            //showError();
-        });*/
-
-        try {
-            const res = await fetch(`http://localhost:3000/api/products/${productID}`);
-            if (res.ok){
-                return res.json();
-            }
-        } catch (error) {
-            console.error(error);
-        }
-}
-
-
 /* ----------------- Part Total ---------------------*/
 
 /* === Add to the DOM the total number of product and the total price === */
@@ -172,10 +143,10 @@ function putBackOldValue(input, articleId, articleColor, storageTab){
         if (product.id === articleId){
             input.value = product[articleColor];
             advise("value",input.parentElement);
-            //setTimeout(removeAdvise(), 2000) refactoriser remove advise
+            console.log(input.nextElementSibling);
+            setTimeout(()=>{ removeAdvise('valueErrorMsg')}, 2000);
         }
     });
-
 }
 
 /* === AddEventListener click on each delete button === */

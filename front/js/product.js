@@ -3,7 +3,7 @@
 /*====================================================*/
 
 import { addIconBag } from "./script.js";
-import {saveInLocalStorage, advise, removeAdvise} from "./function.js";
+import {saveInLocalStorage, advise, removeAdvise, getProductCharacteristic} from "./function.js";
 
 /*====================================================*/
 /* ----------------- Variables -----------------------*/
@@ -24,37 +24,6 @@ function findProductIDOfPage(){
     let pageUrl = new URL(window.location.href);
     productID = pageUrl.searchParams.get('id');
     return;
-}
-
-/* === Use the Id of the product to get all these characteristic === */
-/*export*/ async function getProductCharacteristic(productID){
-    /*fetch(`http://localhost:3000/api/products/${productID}`)
-        .then(function(res){
-            if (res.ok){
-                return res.json();
-            }
-        })
-        .then(function(product){
-            console.log(product);
-            addProductCharacteristic(product);
-
-            //productCharacteristic = product;
-            //***
-        }).catch(function(err){
-            console.log(err);
-            showError();
-        });*/
-
-        try {
-            const res = await fetch(`http://localhost:3000/api/products/${productID}`);
-            if (res.ok){
-                let productCharacteristic = await res.json();
-                addProductCharacteristic(productCharacteristic);
-            }
-        } catch (error) {
-            console.error(error);
-            showError();
-        }
 }
 
 /* === Add to the DOM the characteristic of the product === */
@@ -193,7 +162,17 @@ function resetQuantity(){
 /*====================================================*/
 /* -------------------- Main -------------------------*/
 /*====================================================*/
-findProductIDOfPage();
-getProductCharacteristic(productID);
-addToBagButton.addEventListener('click',addToBag);
-colorsSelectTag.addEventListener('change', ()=>{ colorsSelectTag.children[0].removeAttribute("selected")});
+async function initOfPage(){
+    findProductIDOfPage();
+    let productCharacteristic = await getProductCharacteristic(productID);
+    if (productCharacteristic === "error"){
+        showError();
+    } else {
+        addProductCharacteristic(productCharacteristic);
+    }
+    //getProductCharacteristic(productID);
+    addToBagButton.addEventListener('click',addToBag);
+    colorsSelectTag.addEventListener('change', ()=>{ colorsSelectTag.children[0].removeAttribute("selected")});
+}
+
+initOfPage();
