@@ -3,6 +3,7 @@
 /*====================================================*/
 
 import { addIconBag } from "./script.js";
+import {saveInLocalStorage, advise, removeAdvise} from "./function.js";
 
 /*====================================================*/
 /* ----------------- Variables -----------------------*/
@@ -26,7 +27,7 @@ function findProductIDOfPage(){
 }
 
 /* === Use the Id of the product to get all these characteristic === */
-export async function getProductCharacteristic(productID){
+/*export*/ async function getProductCharacteristic(productID){
     /*fetch(`http://localhost:3000/api/products/${productID}`)
         .then(function(res){
             if (res.ok){
@@ -146,9 +147,9 @@ function checkValue(quantity, colorChoice){
  }
 
  /* ===  Save the tab with all product choiced in the Local Storage === */
-export function saveInLocalStorage(tab){
+/*export function saveInLocalStorage(tab){
     localStorage.kanapProduct = JSON.stringify(tab);
-}
+}*/
 
 /* === If they are nothing else already choiced create the tab to save in the local Storage === */
 function createBag(quantity, colorChoice){
@@ -187,28 +188,6 @@ function updateQuantity(quantity, colorChoice, tab, rank){
 function resetQuantity(){
     quantityTag.value = 0;
     colorsSelectTag.children[0].setAttribute("selected", "");
-}
-
-/* === Advise user adding to DOM an error message that explain what happen wrong === */
-export function advise(errorType, quantityPartTag = document.querySelector('.item__content__settings__quantity')){
-    const adviseTag = document.createElement('p');
-    if (errorType === "color"){
-        adviseTag.innerText = "Veuillez selectionner une couleur";
-        adviseTag.classList.add('colorErrorMsg');
-    } else if (errorType === "value"){
-        adviseTag.innerText = "Veuillez entrez une valeur comprise entre 1 et 100";
-        adviseTag.classList.add('valueErrorMsg');
-    }
-    adviseTag.style = "color : #fbbcbc; font-size : 12px; margin-left:10px;";
-    quantityPartTag.appendChild(adviseTag);
-}
-
-/* === Remove th message that explain what happen wrong === */
-export function removeAdvise(className){
-    const adviseTag = document.querySelector(`.${className}`);
-    if (adviseTag !== null){
-        adviseTag.remove();
-    }
 }
 
 /*====================================================*/

@@ -3,8 +3,7 @@
 /*====================================================*/
 
 import { addIconBag, getAllproductOfStorage, quantityInBag } from "./script.js";
-//import { advise, removeAdvise, saveInLocalStorage, getProductCharacteristic } from "./product.js";
-
+import {saveInLocalStorage, advise, removeAdvise} from "./function.js";
 
 /*====================================================*/
 /* ------------------- Variables ---------------------*/
@@ -162,8 +161,8 @@ function updateLocalStorage(newQuantity, articleId, articleColor, storageTab){
             product[articleColor] = newQuantity;
         }
     });
-    //saveInLocalStorage(storageTab);
-    localStorage.kanapProduct = JSON.stringify(storageTab);
+    saveInLocalStorage(storageTab);
+    //localStorage.kanapProduct = JSON.stringify(storageTab);
     
 }
 
@@ -172,7 +171,8 @@ function putBackOldValue(input, articleId, articleColor, storageTab){
     storageTab.forEach( product => {
         if (product.id === articleId){
             input.value = product[articleColor];
-            //advise("value",input.parentElement);
+            advise("value",input.parentElement);
+            //setTimeout(removeAdvise(), 2000) refactoriser remove advise
         }
     });
 
@@ -211,8 +211,8 @@ function deleteOfStorageTab(storageTab, articleId, articleColor){
             }
         }
     });
-    //saveInLocalStorage(storageTab);
-    localStorage.kanapProduct = JSON.stringify(storageTab);
+    saveInLocalStorage(storageTab);
+    //localStorage.kanapProduct = JSON.stringify(storageTab);
 }
 
 /* === Initialise all the EventListener that check if value entered have the correct format === */
