@@ -70,7 +70,6 @@ function addToBag(){
         // check if kanapProduct already exist in the localStorage
         if (localStorage.kanapProduct === undefined){ 
             createBag(quantity, colorChoice);
-            resetQuantity();
         } else {
             let kanapProductTab = JSON.parse(localStorage.kanapProduct);
             let rankOfSameId = -1; 
@@ -87,10 +86,8 @@ function addToBag(){
                 // check if in the object of the same product the colorChoiced already exist or not
                 if (kanapProductTab[rankOfSameId][colorChoice] === undefined){
                      addNewColor(quantity, colorChoice, kanapProductTab, rankOfSameId);
-                     resetQuantity();
                 } else {
                     updateQuantity(quantity, colorChoice, kanapProductTab, rankOfSameId)
-                    resetQuantity();
                 }
             }
         }
@@ -124,7 +121,7 @@ function checkValue(quantity, colorChoice){
 function createBag(quantity, colorChoice){
     let tab = [];
     addNewProductInBag(quantity, colorChoice, tab);
-    saveInLocalStorage(tab);
+    
 }
 
 /* ===  Add a new product to tab in the local storage === */
@@ -133,13 +130,13 @@ function addNewProductInBag(quantity, colorChoice, tab){
         id : productID,
         [colorChoice] : quantity
     });
-    saveInLocalStorage(tab);
+    newProductAddedToBag(tab);
 }
 
 /* ===  add a new color if the same product but with another colors is already in the bag === */
 function addNewColor(quantity, colorChoice, tab, rank){
     tab[rank][colorChoice] = quantity;
-    saveInLocalStorage(tab);
+    newProductAddedToBag(tab);
 }
 
 /* === Update the quantity if that product have already been choiced === */
@@ -149,7 +146,7 @@ function updateQuantity(quantity, colorChoice, tab, rank){
     } else {
         tab[rank][colorChoice] = 100;
     }
-    saveInLocalStorage(tab);
+    newProductAddedToBag(tab);
 }
 
 
@@ -157,6 +154,17 @@ function updateQuantity(quantity, colorChoice, tab, rank){
 function resetQuantity(){
     quantityTag.value = 0;
     colorsSelectTag.children[0].setAttribute("selected", "");
+}
+
+function scrollToBag(){
+    const bagIconTag = document.getElementById('bag__icon');
+    bagIconTag.scrollIntoView();
+}
+
+function newProductAddedToBag(tab){
+    saveInLocalStorage(tab);
+    resetQuantity();
+    scrollToBag();
 }
 
 /*====================================================*/
