@@ -3,7 +3,7 @@
 /*====================================================*/
 
 import { addIconBag, getAllproductOfStorage, quantityInBag } from "./script.js";
-import {saveInLocalStorage, advise, removeAdvise} from "./function.js";
+import {saveInLocalStorage, advise, removeAdvise, getProductCharacteristic} from "./function.js";
 
 /*====================================================*/
 /* ------------------- Variables ---------------------*/
@@ -11,6 +11,14 @@ import {saveInLocalStorage, advise, removeAdvise} from "./function.js";
 let userData = {};
 let products = [];
 let order = 0;
+
+const inputRegexToCheck = {
+    firstName : /[0-9!"#\$%&'\(\)\*\+,;:=£$¥€!?°\.\/\\\[\]\^_`{}|«»]/,
+    lastName : /[0-9!"#\$%&'\(\)\*\+,;:=£$¥€!?°\.\/\\\[\]\^_`{}|«»]/,
+    address :  /[!"#\$%&\(\)\*\+;:=£¥€!?°\.\/\\\[\]\^_`{}|«»]/,
+    city :  /[0-9!"'#\$%&\(\)\*\+,;:=£¥€!?°\.\/\\\[\]\^_`{}|«»]/,
+    email : /^\w+([\.-]*\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/
+}
 
 const titleBagTag = document.querySelector('.cartAndFormContainer h1');
 
@@ -188,137 +196,65 @@ function deleteOfStorageTab(storageTab, articleId, articleColor){
 
 /* === Initialise all the EventListener that check if value entered have the correct format === */
 function initFormChecker(){
-    initCheckerFirstName();
-    initCheckerLastName();
-    initCheckerAddress();
-    initCheckerCity();
-    initCheckerEmail();
+    for (let type in inputRegexToCheck){
+        initChecker(type, inputRegexToCheck[type]);
+    }
 }
 
-/* === Event Listener check format of firstName  === */
-function initCheckerFirstName(){
-    const firstNameTag = document.getElementById('firstName');
-    const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
-    // number and spécial characters not authorised ( except special character of letter : é,è,ï,ù,etc..)
-    const regexFirstName = /[0-9!"#\$%&'\(\)\*\+,;:=£$¥€!?°\.\/\\\[\]\^_`{}|«»]/;
-    firstNameTag.addEventListener('change', (e) =>{
-        if((!(regexFirstName.test(e.target.value))) && (e.target.value.length >0)){
-            userData.firstName = e.target.value;
-            firstNameErrorMsg.innerText = "";
-            firstNameErrorMsg.style.background = "white";
+/* === Event Listener check format of value entered by user === */
+function initChecker(type, regex){
+    const tagName = document.getElementById(type);
+    const errorMsgTag = document.getElementById(`${type}ErrorMsg`);   
+
+    tagName.addEventListener('change',(e) => {
+        let testRegex;
+            /* /^\w+([\.-]*\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/    
+            /^\w+([\.-]?\w+)* Must start with 1 or more word char followed by 0 or more . ou - and with at least one last word char
+            @\w+  after @ 1 or more char
+            ([\.-]?\w+)* 0 or 1 . or - followed by minus 1 char
+            (\.\w{2,4})+$/  ending with 1 or more "." and between 2 and 4 word char*/
+
+            //my email regex /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$
+        if (type === 'email'){ 
+            testRegex = (regex.test(e.target.value));
         } else {
-            if (userData.firstName !== undefined){
-                delete userData.firstName;
-            }
-            if (e.target.value.length > 0){
-                firstNameErrorMsg.innerText = "Un prénom ne peut contenir ni chiffre ni charactère spéciaux (à l'exception du tiret).";
-            } else {
-                firstNameErrorMsg.innerText = "";
-            }
+            testRegex = ((!(regex.test(e.target.value))) && (e.target.value.length >0));
         }
-    });   
-}
 
-/* === Event Listener check format of lastName  === */
-function initCheckerLastName(){
-    const lastNameTag = document.getElementById('lastName');
-    const lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
-    const regexlastName = /[0-9!"#\$%&'\(\)\*\+,;:=£$¥€!?°\.\/\\\[\]\^_`{}|«»]/ ; //    /^[\w\-\s]+$/
-    lastNameTag.addEventListener('change', (e) =>{
-        if((!(regexlastName.test(e.target.value))) && (e.target.value.length >0)){
-            userData.lastName = e.target.value;
-            lastNameErrorMsg.innerText = "";
-            lastNameTag.style.background = "white";
+        if (testRegex){
+            userData[type] = e.target.value;
+            errorMsgTag.innerText = "";
+            tagName.style.background = "white";
         } else {
-            if (userData.lastName !== undefined){
-                delete userData.lastName;
+            if (userData[type] !== undefined){
+                delete userData[type];
             }
             if (e.target.value.length > 0){
-                lastNameErrorMsg.innerText = "Un nom ne peut contenir ni chiffre ni charactère spéciaux (à l'exception du tiret).";
+                switch(type){
+                    case 'firstName' :
+                        errorMsgTag.innerText = "Un prénom ne peut contenir ni chiffre ni charactère spéciaux (à l'exception du tiret).";
+                        break;
+                    case 'lastName' :
+                        errorMsgTag.innerText = "Un nom ne peut contenir ni chiffre ni charactère spéciaux (à l'exception du tiret).";
+                        break;
+                    case 'address' :
+                        errorMsgTag.innerText = "Veuillez entrez une adresse correcte. | Ex: 10 quai de la charente";
+                        break;
+                    case 'city' :
+                        errorMsgTag.innerText = "Veuillez entrer un nom de ville correct. | Ex: Bézieux";
+                        break;
+                    case 'email' :
+                        errorMsgTag.innerText = "Veuillez rentrez une adresse email correcte. | Ex: monadresse@kanap.com"
+                        break;
+                    default :
+                        errorMsgTag.innerText = "La valeur saisie est Incorrect";
+                        break;
+                }
             } else {
-                lastNameErrorMsg.innerText = ""; 
-            }
-        }
-    });
-    
-}
-
-/* === Event Listener check format of Address  === */
-function initCheckerAddress(){
-    const addressTagName = document.getElementById('address');
-    const addressErrorMsg = document.getElementById('addressErrorMsg');
-    // number are here authorised but not spécal characters
-    const regexAddress = /[!"#\$%&\(\)\*\+;:=£¥€!?°\.\/\\\[\]\^_`{}|«»]/;
-
-    addressTagName.addEventListener('change', (e) => {
-        if((!(regexAddress.test(e.target.value))) && (e.target.value.length > 0)){
-            userData.address = e.target.value;
-            addressErrorMsg.innerText = "";
-            addressTagName.style.background = "white";
-        } else {
-            if (userData.address !== undefined){
-                delete userData.address;
-            }
-            if (e.target.value.length > 0){
-                addressErrorMsg.innerText = "Veuillez entrez une adresse correcte. | Ex: 10 quai de la charente";
-            } else {
-                addressErrorMsg.innerText = ""; 
+                errorMsgTag.innerText = "";
             }
         }
     });
-}
-
-/* === Event Listener check format of city  === */
-function initCheckerCity(){
-    const cityTagName = document.getElementById('city');
-    const cityErrorMsg = document.getElementById('cityErrorMsg');
-    const regexCity = /[0-9!"'#\$%&\(\)\*\+,;:=£¥€!?°\.\/\\\[\]\^_`{}|«»]/;
-    cityTagName.addEventListener('change', (e) =>{
-        if((!(regexCity.test(e.target.value))) && (e.target.value.length > 0)){
-            userData.city = e.target.value;
-            cityErrorMsg.innerText = "";
-            cityTagName.style.background = "white";
-        } else {
-            if (userData.city !== undefined){
-                delete userData.city;
-            } 
-            if (e.target.value.length > 0){
-                cityErrorMsg.innerText = "Veuillez entrer un nom de ville correct. | Ex: Bézieux";
-            } else {
-                cityErrorMsg.innerText = ""; 
-            }
-        }
-    });
-}
-
-/* === Event Listener check format of email === */
-function initCheckerEmail(){
-    // /^\w+([\.-]*\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/    
-    // /^\w+([\.-]?\w+)* Must start with 1 or more word char followed by 0 or more . ou - and with at least one last word char
-    // @\w+  after @ 1 or more char
-    // ([\.-]?\w+)* 0 or 1 . or - followed by minus 1 char
-    // (\.\w{2,4})+$/  ending with 1 or more "." and between 2 and 4 word char
-
-    // /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$
-    const emailTagName = document.getElementById('email');
-    const emailErrorMsg = document.getElementById('emailErrorMsg');
-    const regexEmail = /^\w+([\.-]*\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
-    emailTagName.addEventListener('change', (e) => {
-        if( regexEmail.test(e.target.value)){
-            userData.email = e.target.value;
-            emailErrorMsg.innerText = "";
-            emailTagName.style.background = "white";
-        } else {
-            if (userData.email !== undefined){
-                delete userData.email;
-            }
-            if (e.target.value.length > 0){
-                emailErrorMsg.innerText = "Veuillez rentrez une adresse email correcte. | Ex: monadresse@kanap.com"
-            } else {
-                emailErrorMsg.innerText = ""; 
-            }
-        }
-    });   
 }
 
 /* === Initialisation of event Listener to order and send the request === */
@@ -371,7 +307,7 @@ async function orderRequest(){
         contact : userData,
         products : products
     }
-    let test;
+
     try {
         let res = await fetch("http://localhost:3000/api/products/order", {
             method: "POST",
