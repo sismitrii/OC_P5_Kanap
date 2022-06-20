@@ -10,9 +10,8 @@ async function initProductsList (){
 
         try {
             const res = await fetch('http://localhost:3000/api/products');
-            let allProducts =[];
             if (res.ok){
-                allProducts = await res.json();
+                let allProducts = await res.json();
                  allProducts.forEach(product => {
                     createProductCard(product);
                 });
