@@ -30,6 +30,9 @@ function findProductIDOfPage(){
 function addProductCharacteristic(productCharacteristic){  // How could I just execute this function when *** is done ?    ASYNC/AWAIT !! 
     const {imageUrl, altTxt, name, price, description, colors} = productCharacteristic;
     
+    const title = document.querySelector('title');
+    title.innerText = `${name} || Kanap`;
+
     //image
     const imageTag = document.createElement('img');
     imageTag.setAttribute("src",imageUrl);
