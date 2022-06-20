@@ -7,20 +7,6 @@ let productsList = [];
 
 /* === Initialise the list of all products on homepage ===*/
 async function initProductsList (){
-    /*fetch('http://localhost:3000/api/products')
-        .then(function(res){
-            if(res.ok){         
-                return res.json(); // received Json and parse it to an Javascript Object
-            }
-        })
-        .then(function(allProducts){
-            allProducts.forEach(product => {
-                createProductCard(product);
-            });
-
-        }).catch(function(err){
-            showError();
-        });*/
 
         try {
             const res = await fetch('http://localhost:3000/api/products');

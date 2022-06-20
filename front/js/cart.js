@@ -113,7 +113,7 @@ async function totalPrice(){
 function initEventChangeQuantity(){
     const itemQuantityInputTab = document.querySelectorAll('.itemQuantity');
 ;    itemQuantityInputTab.forEach(input => {
-        input.addEventListener('change', updateQuantity); //change is when input lose focus
+        input.addEventListener('change', updateQuantity); 
     });
 }
 
@@ -141,8 +141,6 @@ function updateLocalStorage(newQuantity, articleId, articleColor, storageTab){
         }
     });
     saveInLocalStorage(storageTab);
-    //localStorage.kanapProduct = JSON.stringify(storageTab);
-    
 }
 
 /* === If value entered is wrong modify value of input to have the actual number of prodct choiced === */
@@ -162,7 +160,7 @@ function initEventDelete(){
     const itemDeleteTab = document.querySelectorAll('.deleteItem');
     itemDeleteTab.forEach( item =>{
         item.addEventListener('click', deleteProduct);
-    })
+    });
 }
 
 /* === Delete the product everywhere === */
@@ -191,7 +189,6 @@ function deleteOfStorageTab(storageTab, articleId, articleColor){
         }
     });
     saveInLocalStorage(storageTab);
-    //localStorage.kanapProduct = JSON.stringify(storageTab);
 }
 
 /* === Initialise all the EventListener that check if value entered have the correct format === */
@@ -284,7 +281,6 @@ function checkUserData(){
             const errorTag = document.getElementById(data);
             errorTag.style.background = "#db5353";
             errorTag.previousElementSibling.scrollIntoView();
-            // utilisation de setTimeout pour faire une animation de non
             return false;
         }
     }
@@ -323,7 +319,6 @@ async function orderRequest(){
     } catch (error) {
         console.error(error);
     }
-
 }
 
 /* === Delete array kanap Product of the LocalStorage === */

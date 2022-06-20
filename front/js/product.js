@@ -81,7 +81,6 @@ function addToBag(){
             }
             if (rankOfSameId < 0){
                 addNewProductInBag(quantity, colorChoice, kanapProductTab);
-                resetQuantity();
             } else {
                 // check if in the object of the same product the colorChoiced already exist or not
                 if (kanapProductTab[rankOfSameId][colorChoice] === undefined){
@@ -111,11 +110,6 @@ function checkValue(quantity, colorChoice){
     } 
     return true;
  }
-
- /* ===  Save the tab with all product choiced in the Local Storage === */
-/*export function saveInLocalStorage(tab){
-    localStorage.kanapProduct = JSON.stringify(tab);
-}*/
 
 /* === If they are nothing else already choiced create the tab to save in the local Storage === */
 function createBag(quantity, colorChoice){
@@ -156,11 +150,13 @@ function resetQuantity(){
     colorsSelectTag.children[0].setAttribute("selected", "");
 }
 
+/* === Scroll the page to the top of page to icon of bag === */
 function scrollToBag(){
     const bagIconTag = document.getElementById('bag__icon');
     bagIconTag.scrollIntoView();
 }
 
+/* === Add the product to localStorage and show to user it have been done === */
 function newProductAddedToBag(tab){
     saveInLocalStorage(tab);
     resetQuantity();
@@ -178,7 +174,6 @@ async function initOfPage(){
     } else {
         addProductCharacteristic(productCharacteristic);
     }
-    //getProductCharacteristic(productID);
     addToBagButton.addEventListener('click',addToBag);
     colorsSelectTag.addEventListener('change', ()=>{ colorsSelectTag.children[0].removeAttribute("selected")});
 }

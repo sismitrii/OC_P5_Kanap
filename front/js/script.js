@@ -21,19 +21,12 @@ function countQuantityInBag(){
 }
 
 /* === Return an array of the products in the local Storage === */
-/*function getTabOfProduct(){
-    if (localStorage.kanapProduct !== undefined){
-       productsTab = JSON.parse(localStorage.kanapProduct); 
-    }
-}*/
-
 export function getAllproductOfStorage(){
     if (localStorage.kanapProduct !== undefined){
        return JSON.parse(localStorage.kanapProduct); 
     } 
     return [];
 }
-
 
 function count(){
     quantityInBag = 0;
@@ -84,5 +77,13 @@ function createIcon(){
     }
 }
 
+/*====================================================*/
+/* ---------------------- Main -----------------------*/
+/*====================================================*/
 addIconBag();
+
+/*====================================================*/
+/* -------------------- Export -----------------------*/
+/*====================================================*/
+
 export {quantityInBag};
