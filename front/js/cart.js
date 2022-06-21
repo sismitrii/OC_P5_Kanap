@@ -191,6 +191,9 @@ function deleteOfStorageTab(storageTab, articleId, articleColor){
     saveInLocalStorage(storageTab);
 }
 
+
+/* ----------------- Part Order Products ---------------------*/
+
 /* === Initialise all the EventListener that check if value entered have the correct format === */
 function initFormChecker(){
     for (let type in inputRegexToCheck){
