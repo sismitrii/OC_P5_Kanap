@@ -43,7 +43,7 @@ function createProductCard(product){
 function showError(){
     const title = document.querySelector('.titles h1');
     title.innerHTML = "Erreur dans le chargement de la page </br>Veuillez nous excusez !";
-    const text = document.querySelector('titles h2');
+    const text = document.querySelector('.titles h2');
     text.innerHTML = "Le problème est actuellement pris en charge par notre équipe, veuillez réessayer ultérieurement";
 }
 
