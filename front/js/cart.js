@@ -150,7 +150,7 @@ function putBackOldValue(input, articleId, articleColor, storageTab){
             input.value = product[articleColor];
             advise("value",input.parentElement);
             console.log(input.nextElementSibling);
-            setTimeout(()=>{ removeAdvise('valueErrorMsg')}, 2000);
+            setTimeout(()=>{ removeAdvise('valueErrorMsg')}, 5000);
         }
     });
 }
