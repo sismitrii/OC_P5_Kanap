@@ -350,6 +350,7 @@ async function initOfPage(){
     initEventChangeQuantity();
     initEventDelete();
     checkerBag();
+    
     initFormChecker();
     initOrderButton();
 }
