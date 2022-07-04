@@ -93,8 +93,6 @@ function addToBag(){
                 }
             }
         }
-        // Refresh number of product in bag
-        addIconBag();
     }
 }
 
@@ -163,6 +161,7 @@ function scrollToBag(){
 function newProductAddedToBag(tab){
     saveInLocalStorage(tab);
     resetQuantity();
+    addIconBag();
     scrollToBag();
 }
 
